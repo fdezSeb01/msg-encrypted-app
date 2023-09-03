@@ -1,0 +1,20 @@
+.main-screen{
+
+}
+
+.header-pane{
+    -fx-border-color: black;
+    -fx-background-color: white;
+
+}
+
+.header-label, .name-label{
+    -fx-background-color: white;
+}
+
+.contact-pane{
+    -fx-border-color: black;
+    -fx-background-color: white;
+}
+
+

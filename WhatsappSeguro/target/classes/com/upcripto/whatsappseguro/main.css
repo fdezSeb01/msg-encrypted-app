@@ -1,0 +1,44 @@
+.message{
+    -fx-background-radius: 5;
+    -fx-border-color: black;
+    -fx-border-radius: 5; 
+    -fx-label-padding: 5;
+}
+
+.left{
+    -fx-background-color: rgb(174, 217, 219);
+}
+
+.right{
+    -fx-background-color: rgb(212, 212, 212);
+}
+
+.main-screen{
+
+}
+
+.header-pane{
+    -fx-border-color: black;
+    -fx-background-color: white;
+
+}
+
+.header-label{
+    -fx-background-color: white;
+}
+
+.scroll-pane{
+
+}
+
+.send-button{
+
+}
+
+.txt-field{
+
+}
+
+.inner-scroll-pane{
+    
+}

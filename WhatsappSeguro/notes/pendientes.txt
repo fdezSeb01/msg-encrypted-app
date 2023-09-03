@@ -1,0 +1,15 @@
+1. Mandar informacion de login al servidor (name, num) y recuperar user_id
+    1.1. Manejar cuando usuario existe y nombre correcto
+    1.2. Manejar cuando usuario existe pero nombre incorrecto
+    1.3. Manejar cuando usuario no existe
+    1.4 En server hashmap con {client_id: user_id}
+2. Rellenar panatalla de contactos con chats asociados a ese user id
+    2.0. Set id de cada chat con el destination_id
+    2.1 Cada contacto necesita la pp del destino, ultimo mensaje, ultima hora
+3. Recuperar los chats de esa persona y pintarlos
+    3.1 Dependiendo de sender_id es el color
+4. Send message
+    4.1. Mandar info al server
+    4.1.1 Mandar mesnaje a mongoDB
+    4.2. Configurar sender_id
+    4.3. Mandar mesnaje el destino_id, si esta conectado manejar cliente por el client_id
