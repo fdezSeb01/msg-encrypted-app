@@ -8,6 +8,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+class loginValidation{
+    String action;
+    int user_id;
+    public loginValidation(int user_id) {
+        this.action = "loginResponse";
+        this.user_id = user_id;
+    }
+}
+
 public class WhatsappServer {
     private static final int PORT = 5109;
     public static Map<String, Socket> connectedClients = new HashMap<>();
@@ -61,7 +70,8 @@ class ClientHandler extends Thread {
                     case "newMsg":
                         handleNewMessage(jsonObject);
                         break;
-                    case "otherAction":
+                    case "createUser":
+                        handleCreateUser(jsonObject,out);
                         break;
                     default:
                         handleUnsupportedAction(action);
@@ -87,6 +97,14 @@ class ClientHandler extends Thread {
     private void handleNewMessage(JsonObject msg){
         System.out.println("Recieved in server\n"+msg);
         //return "Message recieved";
+    }
+
+    private void handleCreateUser(JsonObject user, PrintWriter out){
+        loginValidation loginVal = new loginValidation(1);
+        Gson gson = new Gson();
+        String loginJSON = gson.toJson(loginVal);
+        out.println(loginJSON);
+        System.out.println("Got to the point to send the login "+loginJSON);
     }
 
     private void handleUnsupportedAction(String action){

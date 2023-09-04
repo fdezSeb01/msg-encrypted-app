@@ -16,15 +16,18 @@ public class LoginController {
 
     @FXML
     private void LoginRegister(ActionEvent event) throws IOException{
-        int user_id = ValidateLogin(nameInput.getText(), numInput.getText());
-        if(user_id==-1) return;
-        ContactosController.setUserId(user_id);
-        App.setRoot("contacts");
+        ConnectionsController.ValidateLogin(nameInput.getText(), numInput.getText());
     }
 
-    private int ValidateLogin(String name, String num){
-        //send name and num to server, validate it and return user_id (ObjectID)
-        //should call method in ConnectionsController ValidateLogin that returns user id
-        return 1;
+    public static void ValidationGotten(int response) throws IOException{
+        int user_id = response;
+        if(user_id==-1){
+            System.out.println("Phone already registered and name doesn't match");
+            return;
+        }
+        ContactosController.setUserId(user_id);
+        System.out.println("Sesion iniciada para user id "+user_id);
+        App.setRoot("contacts");
+
     }
 }

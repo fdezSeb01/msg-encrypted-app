@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.time.LocalTime;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 
 class CreateUser{
@@ -68,6 +70,20 @@ public class ConnectionsController {
                     String inputLine;
                     while ((inputLine = in.readLine()) != null) {
                         // Process the received message (e.g., update UI)
+                        Gson gson = new Gson();
+                        JsonElement jsonElement = gson.fromJson(inputLine, JsonElement.class);
+                        JsonObject jsonObject = jsonElement.getAsJsonObject();
+                        String action = jsonObject.get("action").getAsString();
+                        switch(action){
+                            case "loginResponse":
+                                handleLoginValidationResponse(jsonObject.get("user_id").getAsString());
+                                break;
+                            case "createUser":
+                                break;
+                            default:
+                                handleUnsupportedAction(action);
+                                break;
+                        }
                         System.out.println("Received original message from server: " + inputLine);
                     }
                 } catch (IOException e) {
@@ -93,11 +109,13 @@ public class ConnectionsController {
         }
     }
 
-    public int ValidateLogin(String name, String num){
+    public static void ValidateLogin(String name, String num){
         //create a user instance and send the info
         //esto deberia regresar el numero o -1 si hay pedo
-        talk2server(num);
-        return 1;
+        CreateUser user = new CreateUser(name, num);
+        Gson gson = new Gson();
+        String userJSON = gson.toJson(user);
+        talk2server(userJSON);
     }
 
     public static void talk2server(String message){
@@ -106,5 +124,14 @@ public class ConnectionsController {
         } else {
           System.out.println("Can't send message to server");  
         }
+    }
+
+    public static void handleLoginValidationResponse(String response) throws IOException{
+        LoginController.ValidationGotten(Integer.parseInt(response));
+    }
+
+    private static void handleUnsupportedAction(String action){
+        
+        System.out.println("Error managing action: "+action);
     }
 }
