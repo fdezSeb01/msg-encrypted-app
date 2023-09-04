@@ -25,6 +25,7 @@ public class WhatsappServer {
                 connectedClients.put(clientId, clientSocket);
 
                 Thread clientThread = new ClientHandler(clientId, clientSocket);
+                
                 clientThread.start();
             }
         } catch (IOException e) {
@@ -59,14 +60,15 @@ class ClientHandler extends Thread {
 
                 switch (action) {
                     case "newMsg":
-                        out.println(handleNewMessage(jsonObject));
+                        handleNewMessage(jsonObject);
                         break;
                     case "otherAction":
                         break;
                     default:
                         handleUnsupportedAction(action);
                         break;
-                }            }
+                }            
+            }
         } catch (IOException e) {
             // Handle the exception gracefully, e.g., log it or take appropriate action
             System.err.println("IOException in ClientHandler for client " + clientId + ": " + e.getMessage());
@@ -83,9 +85,9 @@ class ClientHandler extends Thread {
         }
     }
 
-    private String handleNewMessage(JsonObject msg){
-        System.out.println("Recieved\n"+msg);
-        return "Message recieved";
+    private void handleNewMessage(JsonObject msg){
+        System.out.println("Recieved in server\n"+msg);
+        //return "Message recieved";
     }
 
     private void handleUnsupportedAction(String action){
