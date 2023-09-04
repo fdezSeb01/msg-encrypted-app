@@ -20,21 +20,18 @@ public class WhatsappServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress());
 
-                // Generate a unique client ID (e.g., using UUID)
-                String clientId = UUID.randomUUID().toString(); //sacar de la base de mongo
+                String clientId = UUID.randomUUID().toString();
 
-                // Store the client information in the map
                 connectedClients.put(clientId, clientSocket);
 
-                // Create a new thread to handle each client
                 Thread clientThread = new ClientHandler(clientId, clientSocket);
                 clientThread.start();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error initializing server");
+            //e.printStackTrace();
         }
     }
-    // Your ClientHandler class can now include the client ID
 }
 
 class ClientHandler extends Thread {
