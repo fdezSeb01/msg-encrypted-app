@@ -52,17 +52,7 @@ public class ConnectionsController {
 
             // Create a dedicated thread for receiving messages
             Thread receiveThread = new Thread(() -> {
-                try {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                    String inputLine;
-                    while ((inputLine = in.readLine()) != null) {
-                        // Process the received message (e.g., update UI)
-                        System.out.println("Received original response from server: " + inputLine);
-                    }
-                } catch (IOException e) {
-                    // Handle exceptions as needed (e.g., log them)
-                }
+                Listener();
             });
             receiveThread.setDaemon(true);
             receiveThread.start();
@@ -72,53 +62,26 @@ public class ConnectionsController {
     }
 
     public static void Listener(){
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                try {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                // Process the received message (e.g., update UI)
-                System.out.println("Received original message from server: " + inputLine);
-            }
-        } catch (IOException e) {
-            // Handle exceptions as needed (e.g., log them)
-        }
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        // Process the received message (e.g., update UI)
+                        System.out.println("Received original message from server: " + inputLine);
+                    }
+                } catch (IOException e) {
+                    // Handle exceptions as needed (e.g., log them)
+                }
     }
 
     public static void sendMsg2Server(int user_id, int destination_id, String text, String time) {
         newMsg msg = new newMsg(user_id, destination_id, text, time);
         Gson gson = new Gson();
         String msgJSON = gson.toJson(msg);
-        if (out != null) {
-            out.println(msgJSON);
-        } else {
-          System.out.println("Can't send message to server");  
-        }
+        talk2server(msgJSON);
     }
-
-    // private static String talk2server(String message) {
-    //     try {
-    //         if (socket != null && !socket.isClosed()) {
-    //             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-    //             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     
-    //             out.println(message);
-    //             System.out.println("Message sent: " + message);
-    
-    //             String response = in.readLine();
-    //             System.out.println("Response from server: " + response);
-    //             return response;
-    //         } else {
-    //             System.out.println("Not connected to the server.");
-    //             return null; // or throw an exception
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //         return null; // or throw an exception
-    //     }
-    // }
-    
-
     public static void closeSocket() {
         try {
             if (socket != null && !socket.isClosed()) {
@@ -133,11 +96,15 @@ public class ConnectionsController {
     public int ValidateLogin(String name, String num){
         //create a user instance and send the info
         //esto deberia regresar el numero o -1 si hay pedo
+        talk2server(num);
+        return 1;
+    }
+
+    public static void talk2server(String message){
         if (out != null) {
-            out.println(num);
+            out.println(message);
         } else {
           System.out.println("Can't send message to server");  
         }
-        return 1;
     }
 }

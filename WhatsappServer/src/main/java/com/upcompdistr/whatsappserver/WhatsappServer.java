@@ -18,9 +18,8 @@ public class WhatsappServer {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress());
-
                 String clientId = UUID.randomUUID().toString();
+                System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress()+", "+clientId);
 
                 connectedClients.put(clientId, clientSocket);
 

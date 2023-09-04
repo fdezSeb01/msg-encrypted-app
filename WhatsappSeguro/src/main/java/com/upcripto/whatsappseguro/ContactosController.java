@@ -93,7 +93,6 @@ public class ContactosController {
     @FXML
     private void click_on_chat(MouseEvent event)throws IOException{
         String fxid = ((Pane) event.getSource()).getId();
-        System.out.println("FXID of Clicked Chat: " + fxid);
         MainController.setArgs(userID,Integer.parseInt(fxid.split("_")[1]));
         App.setRoot("main");
     }
