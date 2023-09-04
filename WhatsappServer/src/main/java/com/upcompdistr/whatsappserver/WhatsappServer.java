@@ -1,7 +1,9 @@
 package com.upcompdistr.whatsappserver;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import com.google.gson.Gson;
@@ -15,6 +17,23 @@ class loginValidation{
         this.action = "loginResponse";
         this.user_id = user_id;
     }
+}
+
+class Contact{
+    String action;
+    String profile_pic;
+    String last_message_text;
+    String last_message_time;
+    int destination_user_id;
+    String name;
+    public Contact(String profile_pic, String last_message_text, String last_message_time, int destination_user_id, String name) {
+        this.profile_pic = profile_pic;
+        this.last_message_text = last_message_text;
+        this.last_message_time = last_message_time;
+        this.destination_user_id = destination_user_id;
+        this.name = name;
+        action = "ContactsRecieved";
+    }    
 }
 
 public class WhatsappServer {
@@ -74,6 +93,9 @@ class ClientHandler extends Thread {
                     case "validateLogin":
                         handleLoginValidation(jsonObject,out);
                         break;
+                    case "chatsRequest":
+                        hanldeGettingAllChatsFrom(jsonObject.get("user_id").getAsInt(),out);
+                        break;
                     default:
                         handleUnsupportedAction(action);
                         break;
@@ -125,6 +147,31 @@ class ClientHandler extends Thread {
         Gson gson = new Gson();
         String objString = gson.toJson(obj);
         out.println(objString);
+    }
+
+    private void hanldeGettingAllChatsFrom(int user_id, PrintWriter out){
+        //returns array of Contact
+        List<ChatsModel> cm_arr = MongoController.getAllChatsFrom(user_id);
+        
+        if(cm_arr == null) 
+            return;
+        
+        List<Contact> contacts = new ArrayList<>();
+        
+        for(ChatsModel chat : cm_arr){
+            UsersModel user = MongoController.getUserById(chat.getDestination_user_id());
+            
+            contacts.add(
+                new Contact(
+                    user.getProfile_pic(),
+                    chat.getLast_message().getText(),
+                    chat.getLast_message().getTime(),
+                    chat.getDestination_user_id(),
+                    user.getName()
+                )
+            );
+        }
+        sendObj2Client(contacts, out);
     }
 }
 

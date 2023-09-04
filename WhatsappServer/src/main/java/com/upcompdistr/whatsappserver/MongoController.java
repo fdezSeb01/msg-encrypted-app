@@ -1,10 +1,13 @@
 package com.upcompdistr.whatsappserver;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bson.Document;
 
 import com.mongodb.MongoException;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -89,6 +92,70 @@ public class MongoController {
             e.printStackTrace();
             System.out.println("An unexpected error occurred: " + e.getMessage());
             return -2;
+        }
+    }
+
+    public static List<ChatsModel> getAllChatsFrom(int user_id) {
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> chatsCollection = database.getCollection("Chats");
+            FindIterable<Document> results = chatsCollection.find(Filters.eq("user_id", user_id));
+            List<ChatsModel> chats = new ArrayList<>();
+
+            if (!results.iterator().hasNext()) {
+                return null;
+            }        
+
+            for (Document result : results) {
+                int destination_user_id = result.getInteger("destination_user_id");
+                Document last_message_doc = (Document) result.get("last_message");
+                Message last_message = new Message(
+                    last_message_doc.getString("text"),
+                    last_message_doc.getString("time"),
+                    last_message_doc.getInteger("message_id"),
+                    last_message_doc.getInteger("sender_id")
+                );
+                List<Message> messages = new ArrayList<>(); // Initialize messages as an empty list
+                //messages is empty for this method since Im not gonna use it
+                chats.add(new ChatsModel(user_id, destination_user_id, last_message, messages));
+            }
+            return chats;
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static UsersModel getUserById(int user_id) {
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> usersCollection = database.getCollection("Users");
+            Document result = usersCollection.find(Filters.eq("user_id", user_id)).first();
+
+            if (result != null) {
+                // User_id exists in the collection
+                String name = result.getString("name");
+                String phone_num = result.getString("phone_num");
+                String profile_pic = result.getString("profile_pic");
+
+                return new UsersModel(user_id, name, phone_num, profile_pic);
+            } else {
+                // User_id does not exist in the collection
+                return null;
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            return null;
         }
     }
     

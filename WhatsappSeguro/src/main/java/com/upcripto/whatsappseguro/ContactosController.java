@@ -16,8 +16,8 @@ import javafx.scene.text.Font;
 
 public class ContactosController {
     
-    private int contactPaneCount = 0;
     private static int userID=-1;
+
     @FXML
     Pane MainPane;
 
@@ -25,15 +25,41 @@ public class ContactosController {
 
     public void initialize() {
         instance = this;
+        ConnectionsController.getChatsFrom(userID);
+    }
+
+    private void generateChats(int n, int[] ids,String[] names, String[] pps, String[] messages_text, String[] messages_time) throws IOException{
+        for(int i=0;i<n;i++){
+            create_new_chat(ids[i],names[i], pps[i], messages_text[i], messages_time[i]);
+        }
+    }
+
+    public static void ContactsGotten(int n, int[] ids,String[] names, String[] pps, String[] messages_text, String[] messages_time) throws IOException{
+        if(n==0) return;
+        ContactosController.CallChatsGenerator(n, ids, names, pps, messages_text, messages_time);
+        System.out.println("Chats inicializados");
+    }
+
+    public static void CallChatsGenerator(int n, int[] ids,String[] names, String[] pps, String[] messages_text, String[] messages_time) throws IOException{
+        if(instance != null) {
+            // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    instance.generateChats(n,ids,names,pps, messages_text, messages_time);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });       
+        }
     }
 
     @FXML
-    private void create_new_chat() throws IOException{
+    private void create_new_chat(int id, String name, String pp, String message_text, String message_time) throws IOException{
         Pane contactPane = new Pane();
         contactPane.getStyleClass().add("contact-pane");
         contactPane.setPrefWidth(376);
         contactPane.setPrefHeight(65);
-        contactPane.setId("chat_"+contactPaneCount);
+        contactPane.setId("chat_"+id);
         contactPane.setOnMouseClicked(event -> {
             try {
                 click_on_chat(event);
@@ -49,7 +75,7 @@ public class ContactosController {
             contactPane.setCursor(Cursor.HAND);
         });
 
-        Label nameLabel = new Label("Juanito");
+        Label nameLabel = new Label(name);
         // nameLabel.getStyleClass().add("name-label");
         nameLabel.setLayoutX(62);
         nameLabel.setLayoutY(7);
@@ -58,7 +84,7 @@ public class ContactosController {
         String fxmlResourcePath = getClass().getResource("").toExternalForm();
 
         // Construct the image path relative to the FXML resources location
-        String imagePath = fxmlResourcePath + new_image_path();
+        String imagePath = fxmlResourcePath + new_image_path(pp);
 
         // Load the image using the constructed path
         Image image = new Image(imagePath);
@@ -70,13 +96,13 @@ public class ContactosController {
         imageView.setLayoutX(6);
         imageView.setLayoutY(8);
 
-        Label messageLabel = new Label("Hola, como estas wowowow");
+        Label messageLabel = new Label(message_text);
         // messageLabel.getStyleClass().add("name-label");
         messageLabel.setLayoutX(65);
         messageLabel.setLayoutY(34);
         messageLabel.setFont(Font.font("Monospaced",12.0));
 
-        Label timeLabel = new Label("12:39 pm");
+        Label timeLabel = new Label(message_time);
         // timeLabel.getStyleClass().add("name-label");
         timeLabel.setLayoutX(308);
         timeLabel.setLayoutY(11);
@@ -85,7 +111,6 @@ public class ContactosController {
         contactPane.getChildren().addAll(nameLabel, imageView, messageLabel, timeLabel);
 
         MainPane.getChildren().add(contactPane);
-        contactPaneCount++;
 
         double totalHeight = 0;
         for (Node child : MainPane.getChildren()) {
@@ -103,12 +128,8 @@ public class ContactosController {
         App.setRoot("main");
     }
 
-    private String new_image_path(){
-        Random random = new Random();
-        int rand = random.nextInt(4) + 1;
-        int rand_sex = random.nextInt(2);
-        String sex = (rand_sex==1) ? "man" : "woman";
-        return "images/"+sex+rand+".png";
+    private String new_image_path(String img){
+        return "images/"+img;
     }
 
     public static void setUserId(int num){

@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.time.LocalTime;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -36,6 +37,16 @@ class newMsg{
         this.time = time;
         action = "newMsg";
     }
+}
+
+class ChatsRequest{
+    public String action;
+    public int user_id;
+    public ChatsRequest(int user_id) {
+        this.user_id = user_id;
+        this.action = "chatsRequest";
+    }
+    
 }
 
 
@@ -80,6 +91,9 @@ public class ConnectionsController {
                                 break;
                             case "messageIncoming":
                                 break;
+                            case "ContactsRecieved":
+                                handleContactsRecieved(jsonObject);
+                                break;
                             default:
                                 handleUnsupportedAction(action);
                                 break;
@@ -110,17 +124,15 @@ public class ConnectionsController {
     }
 
     public static void ValidateLogin(String name, String num){
-        //create a user instance and send the info
-        //esto deberia regresar el numero o -1 si hay pedo
         User user = new User(name, num);
-        Gson gson = new Gson();
-        String userJSON = gson.toJson(user);
-        talk2server(userJSON);
+        talk2server(user);
     }
 
-    public static void talk2server(String message){
+    public static <T> void talk2server(T obj){
+        Gson gson = new Gson();
+        String objJSON = gson.toJson(obj);
         if (out != null) {
-            out.println(message);
+            out.println(objJSON);
         } else {
           System.out.println("Can't send message to server");  
         }
@@ -130,8 +142,36 @@ public class ConnectionsController {
         LoginController.ValidationGotten(Integer.parseInt(response));
     }
 
+    private static void handleContactsRecieved(JsonObject obj) throws IOException {
+        JsonArray contactsArray = obj.getAsJsonArray();
+        
+        int n = contactsArray.size();
+
+        int[] ids = new int[n];
+        String[] names = new String[n];
+        String[] pps = new String[n];
+        String[] messages_text = new String[n];
+        String[] messages_time = new String[n];
+
+        for (int i = 0; i < n; i++) {
+            JsonObject contactObj = contactsArray.get(i).getAsJsonObject();
+            ids[i] = contactObj.get("destination_user_id").getAsInt();
+            names[i] = contactObj.get("name").getAsString();
+            pps[i] = contactObj.get("profile_pic").getAsString();
+            messages_text[i] = contactObj.get("last_message_text").getAsString();
+            messages_time[i] = contactObj.get("last_message_time").getAsString();
+        }
+
+        ContactosController.ContactsGotten(n, ids, names, pps, messages_text, messages_time);
+    }
+
     private static void handleUnsupportedAction(String action){
         
         System.out.println("Error managing action: "+action);
+    }
+
+    public static void getChatsFrom(int user_id){
+        ChatsRequest cr = new ChatsRequest(user_id);
+        talk2server(cr);
     }
 }

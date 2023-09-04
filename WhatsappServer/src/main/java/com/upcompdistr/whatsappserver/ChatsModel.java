@@ -52,7 +52,6 @@ class Message {
 }
 
 public class ChatsModel {
-    private int _id;
     private int user_id;
     private int destination_user_id;
     private Message last_message;
@@ -61,20 +60,11 @@ public class ChatsModel {
     // Constructors, getters, and setters
     public ChatsModel() {}
 
-    public ChatsModel(int _id, int user_id, int destination_user_id, Message last_message, List<Message> messages) {
-        this._id = _id;
+    public ChatsModel(int user_id, int destination_user_id, Message last_message, List<Message> messages) {
         this.user_id = user_id;
         this.destination_user_id = destination_user_id;
         this.last_message = last_message;
         this.messages = messages;
-    }
-
-    public int get_id() {
-        return _id;
-    }
-
-    public void set_id(int _id) {
-        this._id = _id;
     }
 
     public int getUser_id() {
