@@ -107,6 +107,7 @@ class ClientHandler extends Thread {
     }
 
     private void handleCreateUser(JsonObject user, PrintWriter out){
+        MongoController.insertUser();
         loginValidation loginVal = new loginValidation(1);
         Gson gson = new Gson();
         String loginJSON = gson.toJson(loginVal);
