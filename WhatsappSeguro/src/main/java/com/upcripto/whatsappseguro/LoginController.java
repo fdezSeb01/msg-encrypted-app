@@ -22,7 +22,7 @@ public class LoginController {
     public static void ValidationGotten(int response) throws IOException{
         int user_id = response;
         if(user_id==-1){
-            System.out.println("Phone already registered and name doesn't match");
+            System.out.println("Número ya esta registrado y nombre no coincide!");
             return;
         }
         ContactosController.setUserId(user_id);

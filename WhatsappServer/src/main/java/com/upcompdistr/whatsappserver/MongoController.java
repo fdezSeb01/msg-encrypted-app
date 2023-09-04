@@ -1,5 +1,7 @@
 package com.upcompdistr.whatsappserver;
 
+import java.util.Random;
+
 import org.bson.Document;
 
 import com.mongodb.MongoException;
@@ -7,6 +9,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
 
 public class MongoController {
 
@@ -28,15 +32,15 @@ public class MongoController {
         }
     }
 
-    public static void insertUser() {
+    public static void insertUser(int user_id, String name, String phone_num, String profile_pic) {
         try {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");
             MongoCollection<Document> usersCollection = database.getCollection("Users");
 
-            Document userDocument = new Document("user_id", 4)
-                    .append("name", "Juana")
-                    .append("phone_num", "3333")
-                    .append("profile_pic", "woman3.png");
+            Document userDocument = new Document("user_id", user_id)
+                    .append("name", name)
+                    .append("phone_num", phone_num)
+                    .append("profile_pic", profile_pic);
 
             usersCollection.insertOne(userDocument);
             System.out.println("Usuario creado e insertado a mongo");
@@ -47,6 +51,54 @@ public class MongoController {
             e.printStackTrace();
             System.out.println("An unexpected error occurred: " + e.getMessage());
         }
+    }
+
+    public static int check_userId_exists(String name, String num) {
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> usersCollection = database.getCollection("Users");
+            Document result = usersCollection.find(Filters.eq("phone_num", num)).first();
+    
+            if (result != null) {
+                // User_id exists in the collection
+                String userName = result.getString("name");
+                int user_id = result.getInteger("user_id");
+                if (userName.equals(name)) {
+                    // Name matches the associated user_id
+                    return user_id;
+                } else {
+                    // Name does not match
+                    return -1;
+                }
+            } else {
+                // User_id does not exist in the collection
+                Document maxUserIdDoc = usersCollection.find()
+                        .sort(Sorts.descending("user_id"))
+                        .limit(1)
+                        .first();
+    
+                int nextUserId = (maxUserIdDoc != null) ? maxUserIdDoc.getInteger("user_id") + 1 : 1;
+                insertUser(nextUserId, name, num, randomPP());
+                return nextUserId; //case phone wasn't registered
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+            return -2;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            return -2;
+        }
+    }
+    
+
+    private static String randomPP() {
+        Random random = new Random();
+        int rand = random.nextInt(4) + 1;
+        int rand_sex = random.nextInt(2);
+        String sex = (rand_sex==1) ? "man" : "woman";
+        return sex+rand+".png";
     }
 }
 

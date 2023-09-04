@@ -71,8 +71,8 @@ class ClientHandler extends Thread {
                     case "newMsg":
                         handleNewMessage(jsonObject);
                         break;
-                    case "createUser":
-                        handleCreateUser(jsonObject,out);
+                    case "validateLogin":
+                        handleLoginValidation(jsonObject,out);
                         break;
                     default:
                         handleUnsupportedAction(action);
@@ -101,23 +101,30 @@ class ClientHandler extends Thread {
         String msg =obj.get("msg").getAsString();
         String time = obj.get("time").getAsString();
 
-        //insert register in mongo DB
+        //insert register in mongo DB chats table
 
         //return "Message recieved";
     }
 
-    private void handleCreateUser(JsonObject user, PrintWriter out){
-        MongoController.insertUser();
-        loginValidation loginVal = new loginValidation(1);
-        Gson gson = new Gson();
-        String loginJSON = gson.toJson(loginVal);
-        out.println(loginJSON);
-        System.out.println("Got to the point to send the login "+loginJSON);
+    private void handleLoginValidation(JsonObject user, PrintWriter out){
+        //return options (-2 mogno error,-1 name doesnt mathc ,user_id,new_user_id)
+        String name = user.get("name").getAsString();
+        String num = user.get("phone_num").getAsString();
+
+        int response = MongoController.check_userId_exists(name,num);
+        loginValidation lv = new loginValidation(response);
+        sendObj2Client(lv, out);
     }
 
     private void handleUnsupportedAction(String action){
         
         System.out.println("Error managing action: "+action);
+    }
+
+    private static <T> void sendObj2Client(T obj,PrintWriter out){
+        Gson gson = new Gson();
+        String objString = gson.toJson(obj);
+        out.println(objString);
     }
 }
 

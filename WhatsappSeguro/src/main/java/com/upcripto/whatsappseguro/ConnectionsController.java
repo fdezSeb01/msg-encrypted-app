@@ -12,14 +12,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
-class CreateUser{
+class User{
     String action;
     String name;
-    String num;
-    public CreateUser(String name, String num) {
+    String phone_num;
+    public User(String name, String num) {
         this.name = name;
-        this.num = num;
-        action = "createUser";
+        this.phone_num = num;
+        action = "validateLogin";
     }
 }
 
@@ -78,7 +78,7 @@ public class ConnectionsController {
                             case "loginResponse":
                                 handleLoginValidationResponse(jsonObject.get("user_id").getAsString());
                                 break;
-                            case "createUser":
+                            case "messageIncoming":
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -112,7 +112,7 @@ public class ConnectionsController {
     public static void ValidateLogin(String name, String num){
         //create a user instance and send the info
         //esto deberia regresar el numero o -1 si hay pedo
-        CreateUser user = new CreateUser(name, num);
+        User user = new User(name, num);
         Gson gson = new Gson();
         String userJSON = gson.toJson(user);
         talk2server(userJSON);
