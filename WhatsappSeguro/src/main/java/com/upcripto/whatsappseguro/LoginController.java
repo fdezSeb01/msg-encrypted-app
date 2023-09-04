@@ -20,8 +20,11 @@ public class LoginController {
     @FXML
     private Button LoginBtn;
 
+    private static LoginController instance;
+
     public void initialize() {
         // Initialize your button and set event listeners in the initialize method
+        instance = this;
         LoginBtn.setCursor(Cursor.DEFAULT);
 
         LoginBtn.setOnMouseExited(event -> {
@@ -45,7 +48,7 @@ public class LoginController {
         int user_id = response;
         if(user_id==-1){
             System.out.println("Número ya esta registrado y nombre no coincide!");
-            //LoginError();
+            LoginController.LoginError(); //this causes an error but can't make method non-static
             return;
         }
         ContactosController.setUserId(user_id);
@@ -55,7 +58,10 @@ public class LoginController {
     }
     
     @FXML
-    private void LoginError(){
-        loginError.setVisible(true);
+    public static void LoginError(){
+        if(instance != null) {
+            // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
+            javafx.application.Platform.runLater(() -> instance.loginError.setVisible(true));
+        }
     }
 }
