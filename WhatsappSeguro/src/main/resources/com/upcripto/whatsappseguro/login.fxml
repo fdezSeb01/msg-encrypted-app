@@ -37,10 +37,11 @@
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </TextField>
-      <Button layoutX="98.0" layoutY="359.0" mnemonicParsing="false" styleClass="login-btn" text="Login/Registrar" onAction="#LoginRegister">
+      <Button layoutX="98.0" layoutY="359.0" mnemonicParsing="false" onAction="#LoginRegister" styleClass="login-btn" text="Login/Registrar" fx:id="LoginBtn">
          <font>
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </Button>
+      <Label fx:id="loginError" layoutX="95.0" layoutY="416.0" text="Nombre y número no coinciden" textFill="RED" visible="false" />
    </children>
 </Pane>
