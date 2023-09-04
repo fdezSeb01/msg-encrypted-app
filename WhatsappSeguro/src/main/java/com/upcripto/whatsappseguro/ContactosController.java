@@ -21,6 +21,12 @@ public class ContactosController {
     @FXML
     Pane MainPane;
 
+    private static ContactosController instance;
+
+    public void initialize() {
+        instance = this;
+    }
+
     @FXML
     private void create_new_chat() throws IOException{
         Pane contactPane = new Pane();

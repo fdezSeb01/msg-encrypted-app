@@ -57,11 +57,15 @@ public class LoginController {
 
     }
     
+    private void setLoginerrorVisible(){
+        loginError.setVisible(true);
+    }
+
     @FXML
     public static void LoginError(){
         if(instance != null) {
             // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
-            javafx.application.Platform.runLater(() -> instance.loginError.setVisible(true));
+            javafx.application.Platform.runLater(() -> instance.setLoginerrorVisible());
         }
     }
 }
