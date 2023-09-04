@@ -21,7 +21,8 @@ public class WhatsappServer {
     private static final int PORT = 5109;
     public static Map<String, Socket> connectedClients = new HashMap<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
+        MongoController.Connect();
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is listening on port " + PORT);
 
@@ -94,8 +95,14 @@ class ClientHandler extends Thread {
         }
     }
 
-    private void handleNewMessage(JsonObject msg){
-        System.out.println("Recieved in server\n"+msg);
+    private void handleNewMessage(JsonObject obj){
+        int user_id = obj.get("user_id").getAsInt();
+        int destination_id = obj.get("destination_id").getAsInt();
+        String msg =obj.get("msg").getAsString();
+        String time = obj.get("time").getAsString();
+
+        //insert register in mongo DB
+
         //return "Message recieved";
     }
 
