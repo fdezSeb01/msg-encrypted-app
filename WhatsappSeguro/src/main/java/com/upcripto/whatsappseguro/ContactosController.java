@@ -23,10 +23,11 @@ public class ContactosController {
 
     private static ContactosController instance;
 
-    public void initialize() {
+    /*public void initialize() {
+        System.out.println("initialized ContactosController");
         instance = this;
-        ConnectionsController.getChatsFrom(userID);
-    }
+        //ConnectionsController.getChatsFrom(userID);
+    }*/
 
     private void generateChats(int n, int[] ids,String[] names, String[] pps, String[] messages_text, String[] messages_time) throws IOException{
         for(int i=0;i<n;i++){
