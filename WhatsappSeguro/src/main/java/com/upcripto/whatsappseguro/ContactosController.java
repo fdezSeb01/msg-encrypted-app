@@ -54,7 +54,7 @@ public class ContactosController {
         }
     }
 
-    @FXML
+    
     private void create_new_chat(int id, String name, String pp, String message_text, String message_time) throws IOException{
         Pane contactPane = new Pane();
         contactPane.getStyleClass().add("contact-pane");
