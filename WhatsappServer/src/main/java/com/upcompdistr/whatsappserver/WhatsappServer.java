@@ -159,14 +159,18 @@ class ClientHandler extends Thread {
         List<Contact> contacts = new ArrayList<>();
         
         for(ChatsModel chat : cm_arr){
-            UsersModel user = MongoController.getUserById(chat.getDestination_user_id());
+            UsersModel user;
+            if (chat.getUser_id() == user_id)
+                user = MongoController.getUserById(chat.getDestination_user_id());
+            else
+                user = MongoController.getUserById(user_id);
             
             contacts.add(
                 new Contact(
                     user.getProfile_pic(),
                     chat.getLast_message().getText(),
                     chat.getLast_message().getTime(),
-                    chat.getDestination_user_id(),
+                    user.getUser_id(),
                     user.getName()
                 )
             );

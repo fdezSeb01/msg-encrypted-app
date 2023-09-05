@@ -16,7 +16,7 @@ import javafx.scene.text.Font;
 
 public class ContactosController {
     
-    private static int userID=-1;
+    public static int userID=-1;
 
     @FXML
     Pane MainPane;

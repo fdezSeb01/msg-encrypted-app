@@ -99,7 +99,9 @@ public class MongoController {
         try {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");
             MongoCollection<Document> chatsCollection = database.getCollection("Chats");
-            FindIterable<Document> results = chatsCollection.find(Filters.eq("user_id", user_id));
+            FindIterable<Document> results = chatsCollection.find(
+                Filters.or(Filters.eq("user_id", user_id), Filters.eq("destination_user_id", user_id))
+            );
             List<ChatsModel> chats = new ArrayList<>();
 
             if (!results.iterator().hasNext()) {
