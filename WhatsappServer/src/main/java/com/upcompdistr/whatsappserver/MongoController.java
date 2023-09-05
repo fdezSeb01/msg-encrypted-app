@@ -109,6 +109,7 @@ public class MongoController {
             }        
 
             for (Document result : results) {
+                int user_id2 = result.getInteger("user_id");
                 int destination_user_id = result.getInteger("destination_user_id");
                 Document last_message_doc = (Document) result.get("last_message");
                 Message last_message = new Message(
@@ -119,7 +120,7 @@ public class MongoController {
                 );
                 List<Message> messages = new ArrayList<>(); // Initialize messages as an empty list
                 //messages is empty for this method since Im not gonna use it
-                chats.add(new ChatsModel(user_id, destination_user_id, last_message, messages));
+                chats.add(new ChatsModel(user_id2, destination_user_id, last_message, messages));
             }
             return chats;
         } catch (MongoException e) {

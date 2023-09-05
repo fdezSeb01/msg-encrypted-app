@@ -143,8 +143,7 @@ public class ConnectionsController {
     }
 
     private static void handleContactsRecieved(JsonObject obj) throws IOException {
-        JsonArray contactsArray = obj.getAsJsonArray();
-        
+        JsonArray contactsArray = obj.getAsJsonArray("contacts");        
         int n = contactsArray.size();
 
         int[] ids = new int[n];

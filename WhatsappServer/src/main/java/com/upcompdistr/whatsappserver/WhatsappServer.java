@@ -20,7 +20,6 @@ class loginValidation{
 }
 
 class Contact{
-    String action;
     String profile_pic;
     String last_message_text;
     String last_message_time;
@@ -32,8 +31,16 @@ class Contact{
         this.last_message_time = last_message_time;
         this.destination_user_id = destination_user_id;
         this.name = name;
-        action = "ContactsRecieved";
     }    
+}
+
+class Contacts{
+    String action;
+    List<Contact> contacts;
+    public Contacts(List<Contact> contacts) {
+        this.action = "ContactsRecieved";
+        this.contacts = contacts;
+    }   
 }
 
 public class WhatsappServer {
@@ -163,7 +170,7 @@ class ClientHandler extends Thread {
             if (chat.getUser_id() == user_id)
                 user = MongoController.getUserById(chat.getDestination_user_id());
             else
-                user = MongoController.getUserById(user_id);
+                user = MongoController.getUserById(chat.getUser_id());
             
             contacts.add(
                 new Contact(
@@ -175,7 +182,9 @@ class ClientHandler extends Thread {
                 )
             );
         }
-        sendObj2Client(contacts, out);
+        Contacts cts = new Contacts(contacts);
+        System.out.println("Sending: "+cts.toString());
+        sendObj2Client(cts, out);
     }
 }
 
