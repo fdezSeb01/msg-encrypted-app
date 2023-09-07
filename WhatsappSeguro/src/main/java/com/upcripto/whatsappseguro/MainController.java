@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -29,8 +30,14 @@ public class MainController {
     @FXML
     private TextField txt2send;
 
-    private boolean person1= true;
+    private static MainController instance;
 
+    private boolean person1 = false;
+
+    public void initialize() {
+        instance = this;
+
+    }
     @FXML
     private void newMsg(ActionEvent event) throws IOException {
         if(txt2send.getText().isEmpty()) return;

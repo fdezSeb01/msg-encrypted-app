@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -31,12 +32,45 @@ public class ContactosController {
     @FXML
     Label errorNum;
 
+    @FXML
+    ImageView addChat;
+
+    @FXML
+    Button addBtn;
+
+    @FXML
+    Button closeBtn;
+
     private static ContactosController instance;
 
     public void initialize() {
         instance = this;
         //newNumberPane.setVisible(false);
         ConnectionsController.getChatsFrom(userID);
+        addChat.setOnMouseExited(event -> {
+            addChat.setCursor(Cursor.DEFAULT);
+        });
+
+        addChat.setOnMouseEntered(event -> {
+            addChat.setCursor(Cursor.HAND);
+        });
+
+        addBtn.setOnMouseExited(event -> {
+            addBtn.setCursor(Cursor.DEFAULT);
+        });
+
+        addBtn.setOnMouseEntered(event -> {
+            addBtn.setCursor(Cursor.HAND);
+        });
+
+
+        closeBtn.setOnMouseExited(event -> {
+            closeBtn.setCursor(Cursor.DEFAULT);
+        });
+
+        closeBtn.setOnMouseEntered(event -> {
+            closeBtn.setCursor(Cursor.HAND);
+        });
     }
 
     private void generateChats(int n, int[] ids,String[] names, String[] pps, String[] messages_text, String[] messages_time) throws IOException{
@@ -183,6 +217,5 @@ public class ContactosController {
         }
         MainController.setArgs(userID,user_id);
         App.setRoot("main");
-
     }
 }
