@@ -118,6 +118,29 @@ public class MongoController {
         }
     }
 
+    public static String getNameFromUser(int user_id){
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> usersCollection = database.getCollection("Users");
+            Document result = usersCollection.find(Filters.eq("user_id", user_id)).first();
+    
+            if (result != null) {
+                String name = result.getString("name");
+                return name;
+            } else {
+                return "NaN";
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+            return "Mongo Exception";
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            return "Exception";
+        }
+    }
+
     public static List<ChatsModel> getAllChatsFrom(int user_id) {
         try {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");

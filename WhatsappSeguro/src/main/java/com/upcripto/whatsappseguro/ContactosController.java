@@ -104,7 +104,7 @@ public class ContactosController {
         contactPane.getStyleClass().add("contact-pane");
         contactPane.setPrefWidth(376);
         contactPane.setPrefHeight(65);
-        contactPane.setId("chat_"+id);
+        contactPane.setId("chat_"+id+"_"+name);
         contactPane.setOnMouseClicked(event -> {
             try {
                 click_on_chat(event);
@@ -169,7 +169,7 @@ public class ContactosController {
     @FXML
     private void click_on_chat(MouseEvent event)throws IOException{
         String fxid = ((Pane) event.getSource()).getId();
-        MainController.setArgs(userID,Integer.parseInt(fxid.split("_")[1]));
+        MainController.setArgs(userID,Integer.parseInt(fxid.split("_")[1]),fxid.split("_")[2]);
         App.setRoot("main");
     }
 
@@ -197,12 +197,12 @@ public class ContactosController {
         userID = num;
     }
 
-    public static void numberCheckedGotten(int user_id){
+    public static void numberCheckedGotten(int user_id, String name){
         if(instance != null) {
             // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
             javafx.application.Platform.runLater(() -> {
                 try {
-                    instance.numberChecked(user_id);;
+                    instance.numberChecked(user_id, name);;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -210,12 +210,12 @@ public class ContactosController {
         }
     }
 
-    private void numberChecked(int user_id) throws IOException{
+    private void numberChecked(int user_id,String name) throws IOException{
         if (user_id == -1){
             errorNum.setVisible(true);
             return;
         }
-        MainController.setArgs(userID,user_id);
+        MainController.setArgs(userID,user_id, name);
         App.setRoot("main");
     }
 }

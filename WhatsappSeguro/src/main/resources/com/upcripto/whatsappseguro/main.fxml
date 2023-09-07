@@ -14,7 +14,7 @@
    <children>
       <Pane prefHeight="65.0" prefWidth="376.0" style="-fx-border-color: black; -fx-background-color: white;" styleClass="header-pane">
          <children>
-            <Label alignment="TOP_CENTER" layoutX="124.0" layoutY="2.0" style="-fx-background-color: white;" styleClass="header-label" text="Wasap" textAlignment="CENTER">
+            <Label fx:id="headerLabel" alignment="TOP_CENTER" layoutX="124.0" layoutY="2.0" style="-fx-background-color: white;" styleClass="header-label" text="Wasap" textAlignment="CENTER">
                <font>
                   <Font name="Monospaced Regular" size="43.0" />
                </font>

@@ -46,9 +46,11 @@ class Contacts{
 class numberCheck{
     String action;
     int user_id;
-    public numberCheck(int user_id) {
+    String name;
+    public numberCheck(int user_id, String name) {
         this.action = "numberCheck";
         this.user_id = user_id;
+        this.name = name;
     }
 }
 
@@ -150,7 +152,9 @@ class ClientHandler extends Thread {
     private void handleCeckingUserExists(String num, PrintWriter out){
         int response = MongoController.check_userId_exists(num);
         if (response == -2) return;
-        numberCheck nc = new numberCheck(response);
+        String name;
+        name = MongoController.getNameFromUser(response);
+        numberCheck nc = new numberCheck(response, name);
         sendObj2Client(nc, out);
     }
 

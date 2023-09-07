@@ -18,8 +18,12 @@ public class MainController {
 
     private static int chatIdentifier= -1;
     private static int userID=-1;
+    private static String userName="Wasap";
     @FXML
     private Label msg2;
+
+    @FXML
+    private Label headerLabel;
 
     @FXML
     private AnchorPane mainPane;
@@ -35,6 +39,10 @@ public class MainController {
     private boolean person1 = false;
 
     public void initialize() {
+        //Wasap -> nombre contacto
+        headerLabel.setText(userName);
+        //si ya existe el chat -> nada
+        //si no existe el chat -> crear empty chat (last_message con todo en null)
         instance = this;
 
     }
@@ -81,10 +89,11 @@ public class MainController {
         }
     }
 
-    public static void setArgs(int user_id, int chat_num){
+    public static void setArgs(int user_id, int chat_num, String name){
         chatIdentifier = chat_num;
         userID=user_id;
-        System.out.println("chatting "+ userID + "con "+chatIdentifier);
+        userName = name;
+        System.out.println("chatting "+ userID + " con "+chatIdentifier +" " + userName);
     }
 
     @FXML

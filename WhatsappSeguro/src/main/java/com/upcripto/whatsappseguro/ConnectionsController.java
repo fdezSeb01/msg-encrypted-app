@@ -105,7 +105,7 @@ public class ConnectionsController {
                                 handleContactsRecieved(jsonObject);
                                 break;
                             case "numberCheck":
-                                handleNumberChecked(jsonObject.get("user_id").getAsInt());
+                                handleNumberChecked(jsonObject.get("user_id").getAsInt(),jsonObject.get("name").getAsString());
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -192,7 +192,7 @@ public class ConnectionsController {
         talk2server(cu);
     }
 
-    private static void handleNumberChecked(int user_id){
-        ContactosController.numberCheckedGotten(user_id);
+    private static void handleNumberChecked(int user_id, String name){
+        ContactosController.numberCheckedGotten(user_id, name);
     }
 }
