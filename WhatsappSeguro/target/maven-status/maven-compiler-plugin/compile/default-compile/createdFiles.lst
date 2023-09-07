@@ -6,5 +6,6 @@ com/upcripto/whatsappseguro/ChatsRequest.class
 com/upcripto/whatsappseguro/ConnectionsController.class
 com/upcripto/whatsappseguro/User.class
 com/upcripto/whatsappseguro/newMsg.class
+com/upcripto/whatsappseguro/CheckUser.class
 com/upcripto/whatsappseguro/MainController.class
 com/upcripto/whatsappseguro/LoginController.class

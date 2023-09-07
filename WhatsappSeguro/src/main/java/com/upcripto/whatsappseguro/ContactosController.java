@@ -142,19 +142,17 @@ public class ContactosController {
     @FXML
     private void add_chat(MouseEvent event) throws IOException{
         newNumberPane.setVisible(true);
-        System.out.println("pane should be visible");
     }
 
     @FXML
     private void set_invisible_new_num_pane(ActionEvent event) throws IOException{
         newNumberPane.setVisible(false);
-        System.out.println("Setting invisible");
     }
 
     @FXML
-    private void addNum(ActionEvent event){
-        //validar numero y si si crear chat y si no mandar error
-        errorNum.setVisible(true);
+    private void checkUser(ActionEvent event){
+        //validar numero y si si crear chat a ese uder_id y si no mandar error
+        ConnectionsController.check_user_exists(numInput.getText());
     }
 
     private String new_image_path(String img){
@@ -163,5 +161,28 @@ public class ContactosController {
 
     public static void setUserId(int num){
         userID = num;
+    }
+
+    public static void numberCheckedGotten(int user_id){
+        if(instance != null) {
+            // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    instance.numberChecked(user_id);;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });       
+        }
+    }
+
+    private void numberChecked(int user_id) throws IOException{
+        if (user_id == -1){
+            errorNum.setVisible(true);
+            return;
+        }
+        MainController.setArgs(userID,user_id);
+        App.setRoot("main");
+
     }
 }

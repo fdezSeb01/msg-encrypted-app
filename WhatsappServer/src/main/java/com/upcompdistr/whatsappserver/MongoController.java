@@ -95,6 +95,29 @@ public class MongoController {
         }
     }
 
+    public static int check_userId_exists(String num) {
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> usersCollection = database.getCollection("Users");
+            Document result = usersCollection.find(Filters.eq("phone_num", num)).first();
+    
+            if (result != null) {
+                int user_id = result.getInteger("user_id");
+                return user_id;
+            } else {
+                return -1;
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+            return -2;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            return -2;
+        }
+    }
+
     public static List<ChatsModel> getAllChatsFrom(int user_id) {
         try {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");

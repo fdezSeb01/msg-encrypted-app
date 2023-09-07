@@ -61,7 +61,7 @@
                   <Font name="Monospaced Regular" size="13.0" />
                </font>
             </TextField>
-            <Button fx:id="addBtn" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#addNum" styleClass="add-btn" text="Añadir" />
+            <Button fx:id="addBtn" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#checkUser" styleClass="add-btn" text="Añadir" />
             <Label fx:id="errorNum" layoutX="29.0" layoutY="124.0" text="Número no registrado" textFill="RED" visible="false">
                <font>
                   <Font name="Monospaced Regular" size="12.0" />

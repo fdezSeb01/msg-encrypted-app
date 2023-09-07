@@ -49,6 +49,16 @@ class ChatsRequest{
     
 }
 
+class CheckUser{
+    public String action;
+    public String num;
+    public CheckUser(String num) {
+        this.num = num;
+        this.action = "checkUser";
+    }
+    
+}
+
 
 
 public class ConnectionsController {
@@ -93,6 +103,9 @@ public class ConnectionsController {
                                 break;
                             case "ContactsRecieved":
                                 handleContactsRecieved(jsonObject);
+                                break;
+                            case "numberCheck":
+                                handleNumberChecked(jsonObject.get("user_id").getAsInt());
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -172,5 +185,14 @@ public class ConnectionsController {
     public static void getChatsFrom(int user_id){
         ChatsRequest cr = new ChatsRequest(user_id);
         talk2server(cr);
+    }
+
+    public static void check_user_exists(String num){
+        CheckUser cu = new CheckUser(num);
+        talk2server(cu);
+    }
+
+    private static void handleNumberChecked(int user_id){
+        ContactosController.numberCheckedGotten(user_id);
     }
 }

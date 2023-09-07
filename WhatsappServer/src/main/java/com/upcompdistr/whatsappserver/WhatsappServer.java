@@ -43,6 +43,15 @@ class Contacts{
     }   
 }
 
+class numberCheck{
+    String action;
+    int user_id;
+    public numberCheck(int user_id) {
+        this.action = "numberCheck";
+        this.user_id = user_id;
+    }
+}
+
 public class WhatsappServer {
     private static final int PORT = 5109;
     public static Map<String, Socket> connectedClients = new HashMap<>();
@@ -103,6 +112,9 @@ class ClientHandler extends Thread {
                     case "chatsRequest":
                         hanldeGettingAllChatsFrom(jsonObject.get("user_id").getAsInt(),out);
                         break;
+                    case "checkUser":
+                        handleCeckingUserExists(jsonObject.get("num").getAsString(),out);
+                        break;
                     default:
                         handleUnsupportedAction(action);
                         break;
@@ -133,6 +145,13 @@ class ClientHandler extends Thread {
         //insert register in mongo DB chats table
 
         //return "Message recieved";
+    }
+
+    private void handleCeckingUserExists(String num, PrintWriter out){
+        int response = MongoController.check_userId_exists(num);
+        if (response == -2) return;
+        numberCheck nc = new numberCheck(response);
+        sendObj2Client(nc, out);
     }
 
     private void handleLoginValidation(JsonObject user, PrintWriter out){
