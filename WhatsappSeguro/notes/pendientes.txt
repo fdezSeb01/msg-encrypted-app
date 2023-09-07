@@ -1,7 +1,4 @@
 
-2. Rellenar panatalla de contactos con chats asociados a ese user id
-    2.0. Set id de cada chat con el destination_id
-    2.1 Cada contacto necesita la pp del destino, ultimo mensaje, ultima hora
 3. Recuperar los chats de esa persona y pintarlos
     3.1 Dependiendo de sender_id es el color
 4. Send message
