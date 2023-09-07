@@ -59,6 +59,17 @@ class CheckUser{
     
 }
 
+class checkChat{
+    int user_id;
+    int destination_id;
+    String action;
+    public checkChat(int user_id, int destination_id) {
+        this.user_id = user_id;
+        this.destination_id = destination_id;
+        this.action = "checkChat";
+    } 
+}
+
 
 
 public class ConnectionsController {
@@ -194,5 +205,10 @@ public class ConnectionsController {
 
     private static void handleNumberChecked(int user_id, String name){
         ContactosController.numberCheckedGotten(user_id, name);
+    }
+
+    public static void checkIfChatExistsAddIfNot(int user_id, int destination_id){
+        checkChat cc = new checkChat(user_id, destination_id);
+        talk2server(cc);
     }
 }

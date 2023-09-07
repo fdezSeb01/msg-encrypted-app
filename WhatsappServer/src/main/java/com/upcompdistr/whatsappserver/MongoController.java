@@ -216,5 +216,43 @@ public class MongoController {
         String sex = (rand_sex==1) ? "man" : "woman";
         return sex+rand+".png";
     }
+
+    public static void checkIfChatExistsAddIfNot(int user_id, int destination_id){
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> usersCollection = database.getCollection("Chats");
+
+            Document chatDocument = usersCollection.find(
+                Filters.or(
+                    Filters.and(Filters.eq("user_id", user_id), Filters.eq("destination_user_id", destination_id)),
+                    Filters.and(Filters.eq("user_id", destination_id), Filters.eq("destination_user_id", user_id))
+                )
+            ).first();
+
+            if (chatDocument == null) {
+                // Chat does not exist, so add it
+                Document newChatDocument = new Document("user_id", user_id)
+                    .append("destination_user_id", destination_id)
+                    .append("last_message", new Document()
+                        .append("text", "")
+                        .append("time", "")
+                        .append("sender_id", -1)
+                        .append("message_id", -1))
+                    .append("messages", new ArrayList<>());
+
+                usersCollection.insertOne(newChatDocument);
+                System.out.println("Chat created and inserted into MongoDB");
+                
+            }
+            
+
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+        }
+    }
 }
 

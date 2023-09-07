@@ -117,6 +117,9 @@ class ClientHandler extends Thread {
                     case "checkUser":
                         handleCeckingUserExists(jsonObject.get("num").getAsString(),out);
                         break;
+                    case "checkChat":
+                        handleCheckingChatExists(jsonObject);
+                        break;
                     default:
                         handleUnsupportedAction(action);
                         break;
@@ -208,6 +211,14 @@ class ClientHandler extends Thread {
         Contacts cts = new Contacts(contacts);
         System.out.println("Sending: "+cts.toString());
         sendObj2Client(cts, out);
+    }
+
+    private void handleCheckingChatExists(JsonObject obj){
+        int user_id = obj.get("user_id").getAsInt();
+        int destination_id = obj.get("destination_id").getAsInt();
+
+        MongoController.checkIfChatExistsAddIfNot(user_id, destination_id);
+
     }
 }
 

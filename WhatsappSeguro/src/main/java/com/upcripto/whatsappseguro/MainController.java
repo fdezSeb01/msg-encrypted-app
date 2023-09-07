@@ -39,11 +39,13 @@ public class MainController {
     private boolean person1 = false;
 
     public void initialize() {
+        instance = this;
         //Wasap -> nombre contacto
         headerLabel.setText(userName);
         //si ya existe el chat -> nada
+        ConnectionsController.checkIfChatExistsAddIfNot(userID, chatIdentifier); //if any is -1 abort
         //si no existe el chat -> crear empty chat (last_message con todo en null)
-        instance = this;
+
 
     }
     @FXML
