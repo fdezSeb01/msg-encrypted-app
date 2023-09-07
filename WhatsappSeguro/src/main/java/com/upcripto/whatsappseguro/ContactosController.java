@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,10 +22,20 @@ public class ContactosController {
     @FXML
     Pane MainPane;
 
+    @FXML
+    Pane newNumberPane;
+
+    @FXML
+    TextField numInput;
+
+    @FXML
+    Label errorNum;
+
     private static ContactosController instance;
 
     public void initialize() {
         instance = this;
+        //newNumberPane.setVisible(false);
         ConnectionsController.getChatsFrom(userID);
     }
 
@@ -114,7 +125,7 @@ public class ContactosController {
 
         double totalHeight = 0;
         for (Node child : MainPane.getChildren()) {
-            if (child instanceof Pane) {
+            if (child instanceof Pane && (!child.getId().equals("newNumberPane"))) {
                 totalHeight += ((Pane) child).getPrefHeight();
             }
         }
@@ -126,6 +137,24 @@ public class ContactosController {
         String fxid = ((Pane) event.getSource()).getId();
         MainController.setArgs(userID,Integer.parseInt(fxid.split("_")[1]));
         App.setRoot("main");
+    }
+
+    @FXML
+    private void add_chat(MouseEvent event) throws IOException{
+        newNumberPane.setVisible(true);
+        System.out.println("pane should be visible");
+    }
+
+    @FXML
+    private void set_invisible_new_num_pane(ActionEvent event) throws IOException{
+        newNumberPane.setVisible(false);
+        System.out.println("Setting invisible");
+    }
+
+    @FXML
+    private void addNum(ActionEvent event){
+        //validar numero y si si crear chat y si no mandar error
+        errorNum.setVisible(true);
     }
 
     private String new_image_path(String img){

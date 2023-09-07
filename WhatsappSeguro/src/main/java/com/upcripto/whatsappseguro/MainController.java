@@ -77,6 +77,7 @@ public class MainController {
     public static void setArgs(int user_id, int chat_num){
         chatIdentifier = chat_num;
         userID=user_id;
+        System.out.println("chatting "+ userID + "con "+chatIdentifier);
     }
 
     @FXML

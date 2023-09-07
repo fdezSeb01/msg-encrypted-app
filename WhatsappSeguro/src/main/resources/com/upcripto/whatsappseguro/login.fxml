@@ -22,7 +22,7 @@
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="nameInput" layoutX="155.0" layoutY="245.0" promptText="Juanito" styleClass="text-field">
+      <TextField fx:id="nameInput" layoutX="155.0" layoutY="245.0" promptText="Jose" styleClass="text-field">
          <font>
             <Font name="Monospaced Regular" size="18.0" />
          </font>
