@@ -145,7 +145,7 @@ public class ConnectionsController {
                             case "ChatAttached":
                                 handleMessagesRecieved(jsonObject);
                                 break;
-                            case "refresh":
+                            case "refreshContactos":
                                 handleRefresh();
                                 break;
                             default:

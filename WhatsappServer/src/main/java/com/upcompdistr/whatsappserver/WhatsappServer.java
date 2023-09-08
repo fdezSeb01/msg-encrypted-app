@@ -76,7 +76,7 @@ class Chat_idWrapper{
 class Refresher{
     String action;
     public Refresher() {
-        this.action = "refresh";
+        this.action = "refreshContactos";
     }
     
 }
