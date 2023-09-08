@@ -158,7 +158,7 @@ public class ConnectionsController {
                                 handleUnsupportedAction(action);
                                 break;
                         }
-                        System.out.println("Received original message from server: " + inputLine);
+                        System.out.println("Received message from server: " + inputLine);
                     }
                 } catch (IOException e) {
                     // Handle exceptions as needed (e.g., log them)
@@ -261,9 +261,7 @@ public class ConnectionsController {
         String[] times; 
         
         JsonObject chat = obj.get("chat").getAsJsonObject();
-        System.out.println(chat);
         JsonArray messagesArray = chat.get("messages").getAsJsonArray();
-        System.out.println(messagesArray);
         int n = messagesArray.size();
 
         messages = new String[n];

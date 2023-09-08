@@ -47,12 +47,10 @@ public class LoginController {
     public static void ValidationGotten(int response) throws IOException{
         int user_id = response;
         if(user_id==-1){
-            System.out.println("Número ya esta registrado y nombre no coincide!");
             LoginController.LoginError(); //this causes an error but can't make method non-static
             return;
         }
         ContactosController.setUserId(user_id);
-        System.out.println("Sesion iniciada para user id "+user_id);
         ConnectionsController.setClientIdForServer(user_id);
         App.setRoot("contacts");
 

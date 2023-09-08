@@ -82,7 +82,6 @@ public class ContactosController {
     public static void ContactsGotten(int n, int[] ids,String[] names, String[] pps, String[] messages_text, String[] messages_time) throws IOException{
         if(n==0) return;
         ContactosController.CallChatsGenerator(n, ids, names, pps, messages_text, messages_time);
-        System.out.println("Chats inicializados");
     }
 
     public static void CallChatsGenerator(int n, int[] ids,String[] names, String[] pps, String[] messages_text, String[] messages_time) throws IOException{

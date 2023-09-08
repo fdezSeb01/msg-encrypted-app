@@ -359,7 +359,7 @@ public class MongoController {
 
                 System.out.println("Message added successfully");
             } else {
-                System.out.println("Chat not found");
+                System.out.println("Chat not found when trying to add msg");
             }
         } catch (MongoException e) {
             e.printStackTrace();
