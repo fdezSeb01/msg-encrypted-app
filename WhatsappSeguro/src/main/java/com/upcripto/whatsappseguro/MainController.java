@@ -9,6 +9,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -36,10 +37,22 @@ public class MainController {
     @FXML
     private TextField txt2send;
 
+    @FXML
+    private ImageView GoBackbtn;
+
     private static MainController instance;
 
     public void initialize() {
         instance = this;
+
+        GoBackbtn.setOnMouseEntered(event -> {
+            GoBackbtn.setCursor(Cursor.HAND);
+        });
+
+        GoBackbtn.setOnMouseExited(event -> {
+            GoBackbtn.setCursor(Cursor.DEFAULT);
+        });
+        
         //Wasap -> nombre contacto
         headerLabel.setText(userName);
         //si ya existe el chat -> nada        //si no existe el chat -> crear empty chat (last_message con todo en null)

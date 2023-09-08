@@ -19,7 +19,7 @@
                   <Font name="Monospaced Regular" size="43.0" />
                </font>
             </Label>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="17.0" layoutY="21.0" onMouseClicked="#go_home" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="GoBackbtn" fitHeight="25.0" fitWidth="25.0" layoutX="17.0" layoutY="21.0" onMouseClicked="#go_home" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/3_lines.png" />
                </image>
