@@ -290,7 +290,6 @@ public class MongoController {
                     );
                     messages.add(message);
                 }
-                System.out.println(messages);
                 /*@SuppressWarnings("unchecked")
                 List<Document> messages_doc = (List<Document>)
                 List<Message> messages = new ArrayList<>();

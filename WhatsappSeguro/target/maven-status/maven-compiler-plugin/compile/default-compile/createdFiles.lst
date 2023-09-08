@@ -1,4 +1,5 @@
 com/upcripto/whatsappseguro/checkChat.class
+com/upcripto/whatsappseguro/addUser.class
 com/upcripto/whatsappseguro/requestMessages.class
 com/upcripto/whatsappseguro/ContactosController.class
 com/upcripto/whatsappseguro/Main.class

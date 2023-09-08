@@ -82,6 +82,15 @@ class requestMessages{
     } 
 }
 
+class addUser{
+    String action;
+    int user_id;
+    public addUser(int user_id) {
+        this.user_id = user_id;
+        this.action = "addUser";
+    }
+}
+
 
 
 public class ConnectionsController {
@@ -135,6 +144,9 @@ public class ConnectionsController {
                                 break;
                             case "ChatAttached":
                                 handleMessagesRecieved(jsonObject);
+                                break;
+                            case "refresh":
+                                handleRefresh();
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -271,5 +283,14 @@ public class ConnectionsController {
         
         MainController.recieveMessages(messages, senders, times);
 
+    }
+
+    public static void setClientIdForServer(int user_id){
+        addUser au = new addUser(user_id);
+        talk2server(au);
+    }
+
+    private static void handleRefresh() throws IOException{
+        ContactosController.RefreshPage();
     }
 }

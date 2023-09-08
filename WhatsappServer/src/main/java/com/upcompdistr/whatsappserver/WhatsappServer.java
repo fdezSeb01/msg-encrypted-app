@@ -73,9 +73,18 @@ class Chat_idWrapper{
     
 }
 
+class Refresher{
+    String action;
+    public Refresher() {
+        this.action = "refresh";
+    }
+    
+}
+
 public class WhatsappServer {
     private static final int PORT = 5109;
     public static Map<String, Socket> connectedClients = new HashMap<>();
+    public static Map<Integer, Socket> mapUserId_Socket = new HashMap<>();
 
     public static void main(String[] args) throws Exception{
         MongoController.Connect();
@@ -142,6 +151,9 @@ class ClientHandler extends Thread {
                     case "requestMessages":
                         hanldeMessagesRequest(jsonObject.get("id").getAsString(),out);
                         break;
+                    case "addUser":
+                        handleAddingUser2Map(jsonObject.get("user_id").getAsInt());
+                        break;
                     default:
                         handleUnsupportedAction(action);
                         break;
@@ -163,15 +175,32 @@ class ClientHandler extends Thread {
         }
     }
 
+    // Inside the ClientHandler class
+
     private void handleNewMessage(JsonObject obj){
         int user_id = obj.get("user_id").getAsInt();
         int destination_id = obj.get("destination_id").getAsInt();
-        String msg =obj.get("msg").getAsString();
+        String msg = obj.get("msg").getAsString();
         String time = obj.get("time").getAsString();
 
-        //insert register in mongo DB chats table
+        // Insert logic to process the received message
 
-        //return "Message recieved";
+        /*// Retrieve the socket of the destination client
+        Socket destinationSocket = WhatsappServer.connectedClients.get(destination_id);
+
+        if (destinationSocket != null) {
+            try {
+                // Send the message to the destination client
+                PrintWriter destinationOut = new PrintWriter(destinationSocket.getOutputStream(), true);
+                destinationOut.println(msg);
+            } catch (IOException e) {
+                // Handle the exception gracefully, e.g., log it or take appropriate action
+                System.err.println("IOException while sending message to destination client: " + e.getMessage());
+            }
+        } else {
+            // Handle the case when the destination client is not connected
+            System.out.println("Destination client is not connected");
+        }*/
     }
 
     private void handleCeckingUserExists(String num, PrintWriter out){
@@ -241,7 +270,30 @@ class ClientHandler extends Thread {
         String id = MongoController.checkIfChatExistsAddIfNot(user_id, destination_id);
         Chat_idWrapper ciw = new Chat_idWrapper(id);
         sendObj2Client(ciw, out);
+        Refresher r = new Refresher();
+        sendObj2SpecificClient(destination_id, r);
 
+    }
+
+    private <T> void sendObj2SpecificClient(int user_id, T obj){
+        
+        Socket destinationSocket = WhatsappServer.mapUserId_Socket.get(user_id);
+
+        if (destinationSocket != null) {
+            try {
+                // Send the message to the destination client
+                PrintWriter destinationOut = new PrintWriter(destinationSocket.getOutputStream(), true);
+                Gson gson = new Gson();
+                String objString = gson.toJson(obj);
+                destinationOut.println(objString);
+            } catch (IOException e) {
+                // Handle the exception gracefully, e.g., log it or take appropriate action
+                System.err.println("IOException while sending message to destination client: " + e.getMessage());
+            }
+        } else {
+            // Handle the case when the destination client is not connected
+            System.out.println("Destination client is not connected");
+        }
     }
 
     private void hanldeMessagesRequest(String id, PrintWriter out) {
@@ -251,6 +303,10 @@ class ClientHandler extends Thread {
 
         sendObj2Client(cw, out);
 
+    }
+
+    private void handleAddingUser2Map(int user_id){
+        WhatsappServer.mapUserId_Socket.put(user_id, clientSocket);
     }
 }
 

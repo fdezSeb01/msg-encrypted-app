@@ -218,4 +218,8 @@ public class ContactosController {
         MainController.setArgs(userID,user_id, name);
         App.setRoot("main");
     }
+
+    public static void RefreshPage() throws IOException{
+        App.setRoot("contacts");
+    }
 }

@@ -53,6 +53,7 @@ public class LoginController {
         }
         ContactosController.setUserId(user_id);
         System.out.println("Sesion iniciada para user id "+user_id);
+        ConnectionsController.setClientIdForServer(user_id);
         App.setRoot("contacts");
 
     }
