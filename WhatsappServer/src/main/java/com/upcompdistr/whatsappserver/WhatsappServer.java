@@ -77,6 +77,17 @@ class RefresherContactos{
     String action;
     public RefresherContactos() {
         this.action = "refreshContactos";
+    }   
+}
+
+class IncomingMsg{
+    String action;
+    String msg;
+    String time;
+    public IncomingMsg(String msg, String time) {
+        this.msg = msg;
+        this.time = time;
+        action = "incomingMsg";
     }
     
 }
@@ -178,29 +189,18 @@ class ClientHandler extends Thread {
     // Inside the ClientHandler class
 
     private void handleNewMessage(JsonObject obj){
-        int user_id = obj.get("user_id").getAsInt();
+        int sender_id = obj.get("sender_id").getAsInt();
         int destination_id = obj.get("destination_id").getAsInt();
+        String chat_id = obj.get("chat_id").getAsString();
         String msg = obj.get("msg").getAsString();
         String time = obj.get("time").getAsString();
+        
+        IncomingMsg im = new IncomingMsg(msg,time);
+        sendObj2SpecificClient(destination_id, im);
 
-        // Insert logic to process the received message
-
-        /*// Retrieve the socket of the destination client
-        Socket destinationSocket = WhatsappServer.connectedClients.get(destination_id);
-
-        if (destinationSocket != null) {
-            try {
-                // Send the message to the destination client
-                PrintWriter destinationOut = new PrintWriter(destinationSocket.getOutputStream(), true);
-                destinationOut.println(msg);
-            } catch (IOException e) {
-                // Handle the exception gracefully, e.g., log it or take appropriate action
-                System.err.println("IOException while sending message to destination client: " + e.getMessage());
-            }
-        } else {
-            // Handle the case when the destination client is not connected
-            System.out.println("Destination client is not connected");
-        }*/
+        //falta agregar mensaje a messages y actualizar last_message
+        MongoController.addMsg(sender_id, chat_id, msg, time);
+        
     }
 
     private void handleCeckingUserExists(String num, PrintWriter out){
@@ -270,12 +270,15 @@ class ClientHandler extends Thread {
         String id = MongoController.checkIfChatExistsAddIfNot(user_id, destination_id);
         Chat_idWrapper ciw = new Chat_idWrapper(id);
         sendObj2Client(ciw, out);
-        RefresherContactos r = new RefresherContactos();
-        sendObj2SpecificClient(destination_id, r);
 
     }
 
-    private <T> void sendObj2SpecificClient(int user_id, T obj){
+    public static void refreshContactPageOf(int user_id){
+        RefresherContactos r = new RefresherContactos(); //no hacer si el chat ya existia
+        sendObj2SpecificClient(user_id, r);
+    }
+
+    private static <T> void sendObj2SpecificClient(int user_id, T obj){
         
         Socket destinationSocket = WhatsappServer.mapUserId_Socket.get(user_id);
 

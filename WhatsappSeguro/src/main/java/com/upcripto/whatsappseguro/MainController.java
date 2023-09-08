@@ -91,6 +91,22 @@ public class MainController {
     }
 
     @FXML
+    private void printSingleMessageFromServer(String msg, boolean MyMsg, String time, int i){
+        if(msg.isEmpty()) return;
+        msg = msg+"   "+time;
+        Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
+        Label newText = new Label(msg);
+        newText.getStyleClass().add("message");
+        newText.setFont(Font.font("Monospaced"));
+        newText.getStyleClass().add(MyMsg ? "left" : "right");
+        newText.setLayoutX(14f);
+        Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
+        newText.setLayoutY((i==0) ? Yheight : Yheight+7);
+        mainPane.getChildren().add(newText);
+        adjustScrollPaneHeight(newText);
+    }
+
+    @FXML
     private void newMsg(ActionEvent event) throws IOException {
         if(txt2send.getText().isEmpty()) return;
         LocalTime currentTime = LocalTime.now();
@@ -98,18 +114,19 @@ public class MainController {
         int minute = currentTime.getMinute();
         String time = String.format("%02d:%02d", hour, minute);
         String msg = txt2send.getText()+"   "+time;
-        ConnectionsController.sendMsg2Server(userID,chatIdentifier,msg,time);
+        ConnectionsController.sendMsg2Server(chat_id,userID, txt2send.getText(),time,chatIdentifier);
         Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
         Label newText = new Label(msg);
         newText.getStyleClass().add("message");
         newText.setFont(Font.font("Monospaced"));
-        newText.getStyleClass().add("right");
+        newText.getStyleClass().add("left");
         newText.setLayoutX(14f);
         Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
         newText.setLayoutY(Yheight+7);
         mainPane.getChildren().add(newText);
         adjustScrollPaneHeight(newText);
         txt2send.setText(null);
+        
     }
 
     private void adjustScrollPaneHeight(Label newText){
@@ -142,5 +159,18 @@ public class MainController {
     @FXML
     private void go_home() throws IOException{
         App.setRoot("contacts");
+    }
+
+    public static void recieveMsg(String msg, String time){
+        if(instance != null) {
+            // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    instance.printSingleMessageFromServer(msg, false, time, 1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });       
+        }
     }
 }

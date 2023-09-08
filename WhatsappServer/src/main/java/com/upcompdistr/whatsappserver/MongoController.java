@@ -243,6 +243,7 @@ public class MongoController {
 
                 usersCollection.insertOne(newChatDocument);
                 System.out.println("Chat created and inserted into MongoDB"); 
+                ClientHandler.refreshContactPageOf(destination_id);
                 return newChatDocument.getObjectId("_id").toString();
             }
             return chatDocument.getObjectId("_id").toString();
@@ -316,6 +317,52 @@ public class MongoController {
             e.printStackTrace();
             System.out.println("An unexpected error occurred: " + e.getMessage());
             return null;
+        }
+    }
+
+    public static void addMsg(int sender_id, String chat_id, String msg, String time) {
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> chatsCollection = database.getCollection("Chats");
+
+            // Find the document with the given chat_id
+            Document chatDocument = chatsCollection.find(Filters.eq("_id", new ObjectId(chat_id))).first();
+
+            if (chatDocument != null) {
+                // Update the last_message object with new info
+                Document lastMessage = new Document("text", msg)
+                    .append("time", time)
+                    .append("sender_id", sender_id)
+                    .append("message_id", chatDocument.getInteger("last_message.message_id") + 1); //fix
+
+                // Update the last_message field in the document
+                chatDocument.put("last_message", lastMessage);
+
+                // Increment the message_id
+                int messageId = chatDocument.getInteger("last_message.message_id") + 1;
+
+                // Add the new message to the messages array
+                Document newMessage = new Document("message", new Document("text", msg)
+                    .append("time", time)
+                    .append("message_id", messageId)
+                    .append("sender_id", sender_id));
+                
+                @SuppressWarnings("unchecked")
+                List<Document> messages = (List<Document>) chatDocument.get("messages");
+                messages.add(newMessage);
+                // Update the document in the collection
+                chatDocument.put("messages", messages);
+
+                System.out.println("Message added successfully");
+            } else {
+                System.out.println("Chat not found");
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
         }
     }
 }

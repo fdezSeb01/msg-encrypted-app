@@ -29,16 +29,19 @@ class User{
 
 class newMsg{
     public String action;
-    public int user_id;
-    public int destination_id;
+    public String chat_id;
+    public int sender_id;
     public String msg;
     public String time;
-    public newMsg(int user_id, int destination_id, String msg, String time) {
-        this.user_id = user_id;
-        this.destination_id = destination_id;
+    public int destination_id;
+    public newMsg(String chat_id, int sender_id, String msg, String time, int destination_id) {
+        this.chat_id = chat_id;
+        this.sender_id = sender_id;
         this.msg = msg;
         this.time = time;
+        this.destination_id = destination_id;
         action = "newMsg";
+
     }
 }
 
@@ -148,6 +151,9 @@ public class ConnectionsController {
                             case "refreshContactos":
                                 handleRefresh();
                                 break;
+                            case "incomingMsg":
+                                hanldeIncomingMessage(jsonObject);
+                                break;
                             default:
                                 handleUnsupportedAction(action);
                                 break;
@@ -159,11 +165,9 @@ public class ConnectionsController {
                 }
     }
 
-    public static void sendMsg2Server(int user_id, int destination_id, String text, String time) {
-        newMsg msg = new newMsg(user_id, destination_id, text, time);
-        Gson gson = new Gson();
-        String msgJSON = gson.toJson(msg);
-        talk2server(msgJSON);
+    public static void sendMsg2Server(String chat_id, int sender_id, String text, String time, int destination_id) {
+        newMsg msg = new newMsg(chat_id, sender_id, text,time, destination_id);
+        talk2server(msg);
     }
     
     public static void closeSocket() {
@@ -292,5 +296,12 @@ public class ConnectionsController {
 
     private static void handleRefresh() throws IOException{
         ContactosController.RefreshPage();
+    }
+
+    private static void hanldeIncomingMessage(JsonObject obj){
+        String msg = obj.get("msg").getAsString();
+        String time = obj.get("time").getAsString();
+
+        MainController.recieveMsg(msg, time);
     }
 }
