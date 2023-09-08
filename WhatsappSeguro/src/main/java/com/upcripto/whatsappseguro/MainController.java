@@ -18,6 +18,8 @@ public class MainController {
 
     private static int chatIdentifier= -1;
     private static int userID=-1;
+    private static String chat_id = "";
+
     private static String userName="Wasap";
     @FXML
     private Label msg2;
@@ -36,18 +38,58 @@ public class MainController {
 
     private static MainController instance;
 
-    private boolean person1 = false;
-
     public void initialize() {
         instance = this;
         //Wasap -> nombre contacto
         headerLabel.setText(userName);
-        //si ya existe el chat -> nada
+        //si ya existe el chat -> nada        //si no existe el chat -> crear empty chat (last_message con todo en null)
         ConnectionsController.checkIfChatExistsAddIfNot(userID, chatIdentifier); //if any is -1 abort
-        //si no existe el chat -> crear empty chat (last_message con todo en null)
-
-
+        
     }
+
+    public static void setChat_id(String id){
+        chat_id = id;
+        //cargar mesnajes
+        ConnectionsController.requestLoadMessages(chat_id);
+    }
+
+    public static void recieveMessages(String[] messages, String[] senders, String[] times){
+        if(instance != null) {
+            // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    instance.generateMessages(messages,senders,times);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });       
+        }
+    }
+
+    private void generateMessages(String[] messages, String[] senders, String[] times) throws IOException{
+        int n = messages.length;
+        for(int i=0;i<n;i++){
+            boolean myMsg = Integer.parseInt(senders[i]) == userID;
+            printMessage(messages[i], myMsg, times[i],i);
+        }
+    }
+
+    @FXML
+    private void printMessage(String msg, boolean MyMsg, String time, int i){
+        if(msg.isEmpty()) return;
+        msg = msg+"   "+time;
+        Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
+        Label newText = new Label(msg);
+        newText.getStyleClass().add("message");
+        newText.setFont(Font.font("Monospaced"));
+        newText.getStyleClass().add(MyMsg ? "left" : "right");
+        newText.setLayoutX(14f);
+        Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
+        newText.setLayoutY((i==0) ? Yheight : Yheight+37);
+        mainPane.getChildren().add(newText);
+        adjustScrollPaneHeight(newText);
+    }
+
     @FXML
     private void newMsg(ActionEvent event) throws IOException {
         if(txt2send.getText().isEmpty()) return;
@@ -61,14 +103,13 @@ public class MainController {
         Label newText = new Label(msg);
         newText.getStyleClass().add("message");
         newText.setFont(Font.font("Monospaced"));
-        newText.getStyleClass().add(person1 ? "left" : "right");
+        newText.getStyleClass().add("right");
         newText.setLayoutX(14f);
         Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
         newText.setLayoutY(Yheight+7);
         mainPane.getChildren().add(newText);
         adjustScrollPaneHeight(newText);
         txt2send.setText(null);
-        person1 = !person1;
     }
 
     private void adjustScrollPaneHeight(Label newText){

@@ -54,6 +54,25 @@ class numberCheck{
     }
 }
 
+class ChatWrapper{
+    String action;
+    ChatsModel chat;
+    public ChatWrapper(ChatsModel chat) {
+        this.action = "ChatAttached";
+        this.chat = chat;
+    }
+}
+
+class Chat_idWrapper{
+    String action;
+    String id;
+    public Chat_idWrapper(String id) {
+        this.action = "chat_idAttached";
+        this.id = id;
+    }
+    
+}
+
 public class WhatsappServer {
     private static final int PORT = 5109;
     public static Map<String, Socket> connectedClients = new HashMap<>();
@@ -118,7 +137,10 @@ class ClientHandler extends Thread {
                         handleCeckingUserExists(jsonObject.get("num").getAsString(),out);
                         break;
                     case "checkChat":
-                        handleCheckingChatExists(jsonObject);
+                        handleCheckingChatExists(jsonObject,out);
+                        break;
+                    case "requestMessages":
+                        hanldeMessagesRequest(jsonObject.get("id").getAsString(),out);
                         break;
                     default:
                         handleUnsupportedAction(action);
@@ -209,15 +231,25 @@ class ClientHandler extends Thread {
             );
         }
         Contacts cts = new Contacts(contacts);
-        System.out.println("Sending: "+cts.toString());
         sendObj2Client(cts, out);
     }
 
-    private void handleCheckingChatExists(JsonObject obj){
+    private void handleCheckingChatExists(JsonObject obj, PrintWriter out){
         int user_id = obj.get("user_id").getAsInt();
         int destination_id = obj.get("destination_id").getAsInt();
 
-        MongoController.checkIfChatExistsAddIfNot(user_id, destination_id);
+        String id = MongoController.checkIfChatExistsAddIfNot(user_id, destination_id);
+        Chat_idWrapper ciw = new Chat_idWrapper(id);
+        sendObj2Client(ciw, out);
+
+    }
+
+    private void hanldeMessagesRequest(String id, PrintWriter out) {
+
+        ChatsModel cm = MongoController.getChatById(id);
+        ChatWrapper cw = new ChatWrapper(cm);
+
+        sendObj2Client(cw, out);
 
     }
 }

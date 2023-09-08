@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -70,6 +73,15 @@ class checkChat{
     } 
 }
 
+class requestMessages{
+    String id;
+    String action;
+    public requestMessages(String id) {
+        this.id = id;
+        this.action = "requestMessages";
+    } 
+}
+
 
 
 public class ConnectionsController {
@@ -117,6 +129,12 @@ public class ConnectionsController {
                                 break;
                             case "numberCheck":
                                 handleNumberChecked(jsonObject.get("user_id").getAsInt(),jsonObject.get("name").getAsString());
+                                break;
+                            case "chat_idAttached":
+                                handleChat_idRecieved(jsonObject.get("id").getAsString());
+                                break;
+                            case "ChatAttached":
+                                handleMessagesRecieved(jsonObject);
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -210,5 +228,48 @@ public class ConnectionsController {
     public static void checkIfChatExistsAddIfNot(int user_id, int destination_id){
         checkChat cc = new checkChat(user_id, destination_id);
         talk2server(cc);
+    }
+
+    public static void requestLoadMessages(String id){
+        requestMessages rm  = new requestMessages(id);
+        talk2server(rm);
+    }
+
+    private static void handleChat_idRecieved(String id){
+        MainController.setChat_id(id);
+    }
+
+    private static void handleMessagesRecieved(JsonObject obj){
+        String[] messages;
+        String[] senders;
+        String[] times; 
+        
+        JsonObject chat = obj.get("chat").getAsJsonObject();
+        System.out.println(chat);
+        JsonArray messagesArray = chat.get("messages").getAsJsonArray();
+        System.out.println(messagesArray);
+        int n = messagesArray.size();
+
+        messages = new String[n];
+        senders = new String[n];
+        times = new String[n];
+
+        List<JsonObject> sortedMessages = new ArrayList<>();
+        for (JsonElement messageElement : messagesArray) {
+            sortedMessages.add(messageElement.getAsJsonObject());
+        }
+
+        // Sort messages by message_id
+        sortedMessages.sort(Comparator.comparing(m -> m.get("message_id").getAsInt()));
+
+        for (int i = 0; i < n; i++) {
+            JsonObject messageObj = sortedMessages.get(i);
+            messages[i] = messageObj.get("text").getAsString();
+            senders[i] = String.valueOf(messageObj.get("sender_id").getAsInt());
+            times[i] = messageObj.get("time").getAsString();
+        }
+        
+        MainController.recieveMessages(messages, senders, times);
+
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
@@ -217,7 +218,7 @@ public class MongoController {
         return sex+rand+".png";
     }
 
-    public static void checkIfChatExistsAddIfNot(int user_id, int destination_id){
+    public static String checkIfChatExistsAddIfNot(int user_id, int destination_id){
         try {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");
             MongoCollection<Document> usersCollection = database.getCollection("Chats");
@@ -241,17 +242,81 @@ public class MongoController {
                     .append("messages", new ArrayList<>());
 
                 usersCollection.insertOne(newChatDocument);
-                System.out.println("Chat created and inserted into MongoDB");
-                
+                System.out.println("Chat created and inserted into MongoDB"); 
+                return newChatDocument.getObjectId("_id").toString();
             }
+            return chatDocument.getObjectId("_id").toString();
             
 
         } catch (MongoException e) {
             e.printStackTrace();
             System.out.println("MongoDB operation failed: " + e.getMessage());
+            return "NaN";
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("An unexpected error occurred: " + e.getMessage());
+            return "NaN";
+        }
+    }
+
+    public static ChatsModel getChatById(String id) {
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> chatsCollection = database.getCollection("Chats");
+            Document result = chatsCollection.find(Filters.eq("_id", new ObjectId(id))).first();
+
+            if (result != null) {
+                // Chat exists in the collection
+                int user_id = result.getInteger("user_id");
+                int destination_user_id = result.getInteger("destination_user_id");
+                Document last_message_doc = (Document) result.get("last_message");
+                Message last_message = new Message(
+                    last_message_doc.getString("text"),
+                    last_message_doc.getString("time"),
+                    last_message_doc.getInteger("message_id"),
+                    last_message_doc.getInteger("sender_id")
+                );
+                @SuppressWarnings("unchecked")
+                Document[] messagesArray = ((List<Document>) result.get("messages")).toArray(new Document[0]);
+                List<Message> messages = new ArrayList<>();
+                // Iterate over each message in the array
+                for (Document messageDoc : messagesArray) {
+                    Document message_doc = messageDoc.get("message", Document.class);
+                    Message message = new Message(
+                        message_doc.getString("text"),
+                        message_doc.getString("time"),
+                        message_doc.getInteger("message_id"),
+                        message_doc.getInteger("sender_id")
+                    );
+                    messages.add(message);
+                }
+                System.out.println(messages);
+                /*@SuppressWarnings("unchecked")
+                List<Document> messages_doc = (List<Document>)
+                List<Message> messages = new ArrayList<>();
+                for (Document message_doc : messages_doc) {
+                    Message message = new Message(
+                        message_doc.getString("text"),
+                        message_doc.getString("time"),
+                        message_doc.getInteger("message_id"),
+                        message_doc.getInteger("sender_id")
+                    );
+                    messages.add(message);
+                }*/
+                return new ChatsModel(user_id, destination_user_id, last_message, messages);
+            } else {
+                // Chat does not exist in the collection
+                System.out.println("Returned null on getting chat");
+                return null;
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+            System.out.println("MongoDB operation failed: " + e.getMessage());
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            return null;
         }
     }
 }
