@@ -73,9 +73,9 @@ class Chat_idWrapper{
     
 }
 
-class Refresher{
+class RefresherContactos{
     String action;
-    public Refresher() {
+    public RefresherContactos() {
         this.action = "refreshContactos";
     }
     
@@ -270,7 +270,7 @@ class ClientHandler extends Thread {
         String id = MongoController.checkIfChatExistsAddIfNot(user_id, destination_id);
         Chat_idWrapper ciw = new Chat_idWrapper(id);
         sendObj2Client(ciw, out);
-        Refresher r = new Refresher();
+        RefresherContactos r = new RefresherContactos();
         sendObj2SpecificClient(destination_id, r);
 
     }
