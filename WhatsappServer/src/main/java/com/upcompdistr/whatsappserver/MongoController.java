@@ -330,28 +330,32 @@ public class MongoController {
 
             if (chatDocument != null) {
                 // Update the last_message object with new info
-                Document lastMessage = new Document("text", msg)
+                Document last_message_doc = (Document) chatDocument.get("last_message");
+                Document last_message = new Document("text", msg)
                     .append("time", time)
-                    .append("sender_id", sender_id)
-                    .append("message_id", chatDocument.getInteger("last_message.message_id") + 1); //fix
+                    .append("message_id", last_message_doc.getInteger("message_id"))
+                    .append("sender_id", sender_id);
 
                 // Update the last_message field in the document
-                chatDocument.put("last_message", lastMessage);
+                chatDocument.put("last_message", last_message);
 
                 // Increment the message_id
-                int messageId = chatDocument.getInteger("last_message.message_id") + 1;
+                int messageId = last_message_doc.getInteger("message_id") + 1;
 
                 // Add the new message to the messages array
                 Document newMessage = new Document("message", new Document("text", msg)
                     .append("time", time)
                     .append("message_id", messageId)
                     .append("sender_id", sender_id));
-                
+
                 @SuppressWarnings("unchecked")
                 List<Document> messages = (List<Document>) chatDocument.get("messages");
                 messages.add(newMessage);
                 // Update the document in the collection
                 chatDocument.put("messages", messages);
+
+                // Update the document in the collection
+                chatsCollection.updateOne(Filters.eq("_id", new ObjectId(chat_id)), new Document("$set", chatDocument));
 
                 System.out.println("Message added successfully");
             } else {
@@ -359,10 +363,10 @@ public class MongoController {
             }
         } catch (MongoException e) {
             e.printStackTrace();
-            System.out.println("MongoDB operation failed: " + e.getMessage());
+            System.err.println("MongoDB operation failed: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("An unexpected error occurred: " + e.getMessage());
+            System.err.println("An unexpected error occurred: " + e.getMessage());
         }
     }
 }
