@@ -9,6 +9,11 @@ import java.util.UUID;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.Arrays;
+
 
 class loginValidation{
     String action;
@@ -99,6 +104,7 @@ public class WhatsappServer {
     public static Map<String, Integer> mapClientId_UserId = new HashMap<>();
 
     public static void main(String[] args) throws Exception{
+        redirectMongoLogs();
         MongoController.Connect();
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is listening on port " + PORT);
@@ -119,6 +125,18 @@ public class WhatsappServer {
             //e.printStackTrace();
         }
     }
+    
+    private static void redirectMongoLogs() throws IOException{
+        Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        mongoLogger.setLevel(Level.SEVERE);
+
+        FileHandler fileHandler = new FileHandler("mongodb.log"); // Set the log file name
+        mongoLogger.addHandler(fileHandler);
+
+        // Your MongoDB code here
+
+        //fileHandler.close(); // Close the file handler when done
+    }
 }
 
 class ClientHandler extends Thread {
@@ -137,7 +155,7 @@ class ClientHandler extends Thread {
         ) {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println("Received from client " + clientId + ": " + inputLine);
+                //System.out.println("Received from client " + clientId + ": " + inputLine);
 
                 Gson gson = new Gson();
                 JsonElement jsonElement = gson.fromJson(inputLine, JsonElement.class);
@@ -179,9 +197,12 @@ class ClientHandler extends Thread {
                 clientSocket.close();
                 // Remove the client from the map when the thread exits (e.g., client disconnects)
                 WhatsappServer.connectedClients.remove(clientId);
-                int user_id = WhatsappServer.mapClientId_UserId.get(clientId);
-                WhatsappServer.mapClientId_UserId.remove(clientId);
-                WhatsappServer.mapUserId_Socket.remove(user_id);
+                int user_id = -1;
+                if(WhatsappServer.mapClientId_UserId.get(clientId) != null){
+                    user_id = WhatsappServer.mapClientId_UserId.get(clientId);
+                    WhatsappServer.mapClientId_UserId.remove(clientId);
+                    WhatsappServer.mapUserId_Socket.remove(user_id);
+                }
                 System.out.println("Client disconnected: " + clientId + ", user_id: " +user_id);
             } catch (IOException e) {
                 // Handle the exception gracefully, e.g., log it or take appropriate action
@@ -267,7 +288,7 @@ class ClientHandler extends Thread {
             i++;
         }
         Contacts cts = new Contacts(contacts);
-        System.out.println("Recuperados todos los chats de "+user_id +" con " + ids_arr.toString());
+        System.out.println("Recuperados todos los chats de " + user_id + " con " + Arrays.toString(ids_arr));
         sendObj2Client(cts, out);
     }
 

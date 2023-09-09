@@ -115,7 +115,8 @@ public class ConnectionsController {
             receiveThread.setDaemon(true);
             receiveThread.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Could not connect to Server on  port " +SERVER_PORT);
+            //e.printStackTrace();
         }
     }
 
