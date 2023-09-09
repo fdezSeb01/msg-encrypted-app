@@ -96,6 +96,7 @@ public class WhatsappServer {
     private static final int PORT = 5109;
     public static Map<String, Socket> connectedClients = new HashMap<>();
     public static Map<Integer, Socket> mapUserId_Socket = new HashMap<>();
+    public static Map<String, Integer> mapClientId_UserId = new HashMap<>();
 
     public static void main(String[] args) throws Exception{
         MongoController.Connect();
@@ -176,9 +177,12 @@ class ClientHandler extends Thread {
         } finally {
             try {
                 clientSocket.close();
-                System.out.println("Client disconnected: " + clientId);
                 // Remove the client from the map when the thread exits (e.g., client disconnects)
                 WhatsappServer.connectedClients.remove(clientId);
+                int user_id = WhatsappServer.mapClientId_UserId.get(clientId);
+                WhatsappServer.mapClientId_UserId.remove(clientId);
+                WhatsappServer.mapUserId_Socket.remove(user_id);
+                System.out.println("Client disconnected: " + clientId + ", user_id: " +user_id);
             } catch (IOException e) {
                 // Handle the exception gracefully, e.g., log it or take appropriate action
                 System.err.println("Error closing client socket for client " + clientId + ": " + e.getMessage());
@@ -197,7 +201,7 @@ class ClientHandler extends Thread {
         
         IncomingMsg im = new IncomingMsg(msg,time);
         sendObj2SpecificClient(destination_id, im);
-
+        System.out.println("Mensaje mandado de usuario "+sender_id +" a "+destination_id);
         //falta agregar mensaje a messages y actualizar last_message
         MongoController.addMsg(sender_id, chat_id, msg, time);
         
@@ -241,7 +245,8 @@ class ClientHandler extends Thread {
             return;
         
         List<Contact> contacts = new ArrayList<>();
-        
+        int[] ids_arr = new int[cm_arr.size()];
+        int i=0;
         for(ChatsModel chat : cm_arr){
             UsersModel user;
             if (chat.getUser_id() == user_id)
@@ -258,8 +263,11 @@ class ClientHandler extends Thread {
                     user.getName()
                 )
             );
+            ids_arr[i] = user.getUser_id();
+            i++;
         }
         Contacts cts = new Contacts(contacts);
+        System.out.println("Recuperados todos los chats de "+user_id +" con " + ids_arr.toString());
         sendObj2Client(cts, out);
     }
 
@@ -310,6 +318,9 @@ class ClientHandler extends Thread {
 
     private void handleAddingUser2Map(int user_id){
         WhatsappServer.mapUserId_Socket.put(user_id, clientSocket);
+        WhatsappServer.mapClientId_UserId.put(clientId, user_id);
+        String name = MongoController.getNameFromUser(user_id);
+        System.out.println("Usuario registrado a socket, user_id: "+user_id +", nombre: "+name +", clientId: "+clientId);
     }
 }
 

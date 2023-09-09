@@ -47,7 +47,7 @@ public class MongoController {
                     .append("profile_pic", profile_pic);
 
             usersCollection.insertOne(userDocument);
-            System.out.println("Usuario creado e insertado a mongo");
+            System.out.println("Usuario creado con id: "+user_id + " y nombre: "+name);
         } catch (MongoException e) {
             e.printStackTrace();
             System.out.println("MongoDB operation failed: " + e.getMessage());
@@ -69,9 +69,11 @@ public class MongoController {
                 int user_id = result.getInteger("user_id");
                 if (userName.equals(name)) {
                     // Name matches the associated user_id
+                    System.out.println("Usuario validado con id: "+ user_id +" y nombre: "+userName);
                     return user_id;
                 } else {
                     // Name does not match
+                    System.out.println("Usuario no validado, id no coincide con nombre registrado");
                     return -1;
                 }
             } else {
@@ -242,7 +244,7 @@ public class MongoController {
                     .append("messages", new ArrayList<>());
 
                 usersCollection.insertOne(newChatDocument);
-                System.out.println("Chat created and inserted into MongoDB"); 
+                System.out.println("Nuevo chat entre "+ user_id +" y "+destination_id); 
                 ClientHandler.refreshContactPageOf(destination_id);
                 return newChatDocument.getObjectId("_id").toString();
             }
@@ -291,22 +293,10 @@ public class MongoController {
                     );
                     messages.add(message);
                 }
-                /*@SuppressWarnings("unchecked")
-                List<Document> messages_doc = (List<Document>)
-                List<Message> messages = new ArrayList<>();
-                for (Document message_doc : messages_doc) {
-                    Message message = new Message(
-                        message_doc.getString("text"),
-                        message_doc.getString("time"),
-                        message_doc.getInteger("message_id"),
-                        message_doc.getInteger("sender_id")
-                    );
-                    messages.add(message);
-                }*/
+                System.out.println("Chat recuperado entre "+user_id +" y " +destination_user_id);
                 return new ChatsModel(user_id, destination_user_id, last_message, messages);
             } else {
                 // Chat does not exist in the collection
-                System.out.println("Returned null on getting chat");
                 return null;
             }
         } catch (MongoException e) {
@@ -357,7 +347,7 @@ public class MongoController {
                 // Update the document in the collection
                 chatsCollection.updateOne(Filters.eq("_id", new ObjectId(chat_id)), new Document("$set", chatDocument));
 
-                System.out.println("Message added successfully");
+                System.out.println("Nuevo mesnaje de usuario " + sender_id + " añadido a la base al chat " + chat_id);
             } else {
                 System.out.println("Chat not found when trying to add msg");
             }
