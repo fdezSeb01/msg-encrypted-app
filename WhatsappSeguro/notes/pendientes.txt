@@ -1,4 +1,5 @@
 Cehcar id del chat al mandar un y checar que si el usuario esta conectado no lo ponga en el chat equivocado
+Perfeccionar UI
 
 El server debe de:
     1. Confirmar esta corriendo en puerto 5109 {listo}
