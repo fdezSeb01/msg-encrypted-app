@@ -1,19 +1,4 @@
 Cehcar id del chat al mandar un y checar que si el usuario esta conectado no lo ponga en el chat equivocado
-Perfeccionar UI
+Checar que funcione que cuando se agrega un contacto, no refresque al destino si no esta en "contacts"
 
-El server debe de:
-    1. Confirmar esta corriendo en puerto 5109 {listo}
-    2. Imprimir lista de clientes conectados y actualizarlo cada vez que hay una conexion o desconexion {listo}
-        2.1. clientId: user_id, name {listo}
-    3. Registrar mensajes nuevos
-        3.1 Mensaje mandado de user_id a user_id {listo}
-    4. Registro de mongoDB
-        4.0 Conectado a MongoDB {listo}
-        4.1 Usuario {listo}
-            4.1.1 Validacion de Usuario (exitosa o denegada) (nombre, user_id) {listo}
-            4.1.2 Creacion de Usuario (nombre, user_id) {listo}
-        4.2 Chats {listo}
-            4.2.1 Creacion de chat entre X y Y {listo}
-            4.2.2 Nuevo mesnaje añadido (en chat entre user_id y user_id) {listo}
-            4.2.3 Chat recuperado entre user_id y user_id {listo}
-            4.2.4 All chats (user_id tiene conversaciones con [id, id, id]) {listo}
+Perfeccionar UI

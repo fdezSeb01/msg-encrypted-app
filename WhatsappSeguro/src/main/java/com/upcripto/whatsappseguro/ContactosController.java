@@ -1,7 +1,6 @@
 package com.upcripto.whatsappseguro;
 
 import java.io.IOException;
-import java.util.Random;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -219,6 +218,8 @@ public class ContactosController {
     }
 
     public static void RefreshPage() throws IOException{
-        App.setRoot("contacts");
+        if (App.getCurrentRoot().equals("contacts")) {
+            App.setRoot("contacts");
+        }
     }
 }
