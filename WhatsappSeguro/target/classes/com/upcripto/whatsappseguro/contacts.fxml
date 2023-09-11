@@ -33,7 +33,7 @@
          </children>
       </Pane> -->
 
-<Pane fx:id="MainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="376.0" styleClass="main-screen" stylesheets="@contacts.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.upcripto.whatsappseguro.ContactosController">
+<Pane fx:id="MainPaneContactos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="376.0" styleClass="main-screen" stylesheets="@contacts.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.upcripto.whatsappseguro.ContactosController">
    <children>
       <Pane fx:id="headerPane" prefHeight="65.0" prefWidth="376.0" styleClass="header-pane">
          <children>

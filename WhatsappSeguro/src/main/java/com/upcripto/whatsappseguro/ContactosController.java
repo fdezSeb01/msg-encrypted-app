@@ -20,7 +20,7 @@ public class ContactosController {
     public static int userID=-1;
 
     @FXML
-    Pane MainPane;
+    Pane MainPaneContactos;
 
     @FXML
     Pane newNumberPane;
@@ -153,10 +153,10 @@ public class ContactosController {
 
         contactPane.getChildren().addAll(nameLabel, imageView, messageLabel, timeLabel);
 
-        MainPane.getChildren().add(contactPane);
+        MainPaneContactos.getChildren().add(contactPane);
 
         double totalHeight = 0;
-        for (Node child : MainPane.getChildren()) {
+        for (Node child : MainPaneContactos.getChildren()) {
             if (child instanceof Pane && (!child.getId().equals("newNumberPane"))) {
                 totalHeight += ((Pane) child).getPrefHeight();
             }
@@ -219,7 +219,7 @@ public class ContactosController {
     }
 
     public static void RefreshPage() throws IOException{
-        if (App.getCurrentRoot().equals("contacts")) {
+        if (App.getCurrentRoot().equals("MainPaneContactos")) {
             App.setRoot("contacts");
         }
     }

@@ -175,7 +175,7 @@ public class MainController {
     }
 
     public static void recieveMsg(String msg, String time, String id){
-        if(chat_id!=id) return;
+        if (!chat_id.equals(id)) return;
         if(instance != null) {
             // Use Platform.runLater to ensure UI updates happen on the JavaFX Application Thread
             javafx.application.Platform.runLater(() -> {
