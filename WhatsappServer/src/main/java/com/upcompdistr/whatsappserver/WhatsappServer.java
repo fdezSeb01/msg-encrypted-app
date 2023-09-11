@@ -89,10 +89,12 @@ class IncomingMsg{
     String action;
     String msg;
     String time;
-    public IncomingMsg(String msg, String time) {
+    String chat_id;
+    public IncomingMsg(String msg, String time, String chat_id) {
         this.msg = msg;
         this.time = time;
         action = "incomingMsg";
+        this.chat_id = chat_id;
     }
     
 }
@@ -220,7 +222,7 @@ class ClientHandler extends Thread {
         String msg = obj.get("msg").getAsString();
         String time = obj.get("time").getAsString();
         
-        IncomingMsg im = new IncomingMsg(msg,time);
+        IncomingMsg im = new IncomingMsg(msg,time,chat_id);
         sendObj2SpecificClient(destination_id, im);
         System.out.println("Mensaje mandado de usuario "+sender_id +" a "+destination_id);
         //falta agregar mensaje a messages y actualizar last_message

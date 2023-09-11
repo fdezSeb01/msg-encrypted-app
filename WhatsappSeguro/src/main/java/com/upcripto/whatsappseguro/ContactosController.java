@@ -173,6 +173,7 @@ public class ContactosController {
 
     @FXML
     private void add_chat(MouseEvent event) throws IOException{
+        newNumberPane.toFront();
         newNumberPane.setVisible(true);
     }
 

@@ -299,7 +299,8 @@ public class ConnectionsController {
     private static void hanldeIncomingMessage(JsonObject obj){
         String msg = obj.get("msg").getAsString();
         String time = obj.get("time").getAsString();
+        String id = obj.get("chat_id").getAsString();
 
-        MainController.recieveMsg(msg, time);
+        MainController.recieveMsg(msg, time,id);
     }
 }
