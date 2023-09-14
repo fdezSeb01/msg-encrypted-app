@@ -1,1 +1,4 @@
 Perfeccionar UI
+Indicador de usuarios conectados
+    bolita verda
+    en chat poner en linea
