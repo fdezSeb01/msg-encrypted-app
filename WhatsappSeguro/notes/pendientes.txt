@@ -1,5 +1,1 @@
-Cehcar id del chat al mandar un y checar que si el usuario esta conectado no lo ponga en el chat equivocado
-Checar que funcione que cuando se agrega un contacto, no refresque al destino si no esta en "contacts"
-
 Perfeccionar UI
-Traer al frente el pop up de añadir mensaje
