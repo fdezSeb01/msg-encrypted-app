@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="376.0" styleClass="main-screen" stylesheets="@login.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.upcripto.whatsappseguro.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="376.0" style="-fx-background-color: white;" styleClass="main-screen" stylesheets="@login.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.upcripto.whatsappseguro.LoginController">
    <children>
       <Pane prefHeight="65.0" prefWidth="376.0" style="-fx-border-color: black; -fx-background-color: white;" styleClass="header-pane">
          <children>
-            <Label alignment="TOP_CENTER" layoutX="124.0" layoutY="2.0" style="-fx-background-color: white;" styleClass="header-label" text="Wasap" textAlignment="CENTER">
+            <Label alignment="TOP_CENTER" layoutX="102.0" layoutY="-2.0" lineSpacing="5.0" style="-fx-background-color: transparent;" styleClass="header-label" text="WhatsUP" textAlignment="CENTER">
                <font>
-                  <Font name="Monospaced Regular" size="43.0" />
+                  <Font name="Noto Sans CJK JP" size="43.0" />
                </font>
             </Label>
          </children>
@@ -37,7 +37,7 @@
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </TextField>
-      <Button layoutX="98.0" layoutY="359.0" mnemonicParsing="false" onAction="#LoginRegister" styleClass="login-btn" text="Login/Registrar" fx:id="LoginBtn">
+      <Button fx:id="LoginBtn" layoutX="98.0" layoutY="359.0" mnemonicParsing="false" onAction="#LoginRegister" styleClass="login-btn" text="Login/Registrar">
          <font>
             <Font name="Monospaced Regular" size="18.0" />
          </font>

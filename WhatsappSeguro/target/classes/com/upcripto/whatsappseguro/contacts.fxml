@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<!-- <Pane layoutY="65.0" prefHeight="65.0" prefWidth="376.0" styleClass="contact-pane">
+         <children>
+            <Label alignment="TOP_CENTER" layoutX="62.0" layoutY="7.0" styleClass="name-label" text="Juanito" textAlignment="CENTER">
+               <font>
+                  <Font name="Monospaced Regular" size="18.0" />
+               </font>
+            </Label>
+            <ImageView id="contact-image" fitHeight="50.0" fitWidth="50.0" layoutX="6.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/man1.png" />
+               </image>
+            </ImageView>
+            <Label alignment="TOP_CENTER" layoutX="65.0" layoutY="34.0" styleClass="name-label" text="Hola, como estas wowowow" textAlignment="CENTER">
+               <font>
+                  <Font name="Monospaced Regular" size="12.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_CENTER" layoutX="308.0" layoutY="11.0" styleClass="name-label" text="12:39 pm" textAlignment="CENTER">
+               <font>
+                  <Font name="Monospaced Regular" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane> -->
+
+<Pane fx:id="MainPaneContactos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="376.0" styleClass="main-screen" stylesheets="@contacts.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.upcripto.whatsappseguro.ContactosController">
+   <children>
+      <Pane fx:id="headerPane" prefHeight="65.0" prefWidth="376.0" styleClass="header-pane">
+         <children>
+            <Label alignment="TOP_CENTER" layoutX="124.0" layoutY="2.0" styleClass="header-label" text="WhatsUP" textAlignment="CENTER">
+               <font>
+                  <Font name="Monospaced Regular" size="43.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="addChat" fitHeight="35.0" fitWidth="35.0" layoutX="321.0" layoutY="15.0" onMouseClicked="#add_chat" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/plus.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="newNumberPane" layoutX="88.0" layoutY="235.0" prefHeight="200.0" prefWidth="200.0" styleClass="new-num-pane" visible="false">
+         <children>
+            <Label layoutX="48.0" layoutY="44.0" text="Número:">
+               <font>
+                  <Font name="Monospaced Regular" size="25.0" />
+               </font>
+            </Label>
+            <TextField fx:id="numInput" layoutX="47.0" layoutY="90.0" promptText="1234" styleClass="num-txt-field">
+               <font>
+                  <Font name="Monospaced Regular" size="13.0" />
+               </font>
+            </TextField>
+            <Button fx:id="addBtn" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#checkUser" styleClass="add-btn" text="Añadir" />
+            <Label fx:id="errorNum" layoutX="29.0" layoutY="124.0" text="Número no registrado" textFill="RED" visible="false">
+               <font>
+                  <Font name="Monospaced Regular" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="closeBtn" layoutX="162.0" layoutY="14.0" mnemonicParsing="false" onAction="#set_invisible_new_num_pane" styleClass="close-btn" text="X" minWidth="20" />
+         </children>
+      </Pane>
+   </children>
+</Pane>
