@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -14,12 +16,12 @@
    <children>
       <Pane prefHeight="65.0" prefWidth="376.0" style="-fx-border-color: black; -fx-background-color: white;" styleClass="header-pane">
          <children>
-            <Label fx:id="headerLabel" alignment="TOP_CENTER" layoutX="98.0" layoutY="2.0" style="-fx-background-color: white;" styleClass="header-label" text="WhatsUP" textAlignment="CENTER">
+            <Label fx:id="headerLabel" alignment="TOP_CENTER" layoutX="46.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="285.0" style="-fx-background-color: white;" styleClass="header-label" text="WhatsUP" textAlignment="CENTER">
                <font>
-                  <Font name="Monospaced Regular" size="43.0" />
+                  <Font name="Noto Sans CJK JP" size="43.0" />
                </font>
             </Label>
-            <ImageView fx:id="GoBackbtn" fitHeight="25.0" fitWidth="25.0" layoutX="17.0" layoutY="21.0" onMouseClicked="#go_home" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="GoBackbtn" fitHeight="25.0" fitWidth="25.0" layoutX="18.0" layoutY="20.0" onMouseClicked="#go_home" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/3_lines.png" />
                </image>
@@ -35,7 +37,15 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <Button fx:id="SendButton" layoutX="313.0" layoutY="611.0" mnemonicParsing="false" onAction="#newMsg" styleClass="send-button" text="Send" />
-      <TextField fx:id="txt2send" layoutX="20.0" layoutY="613.0" onKeyPressed="#handleEnter" prefHeight="26.0" prefWidth="283.0" styleClass="txt-field" />
+      <Button fx:id="SendButton" layoutX="313.0" layoutY="615.0" mnemonicParsing="false" onAction="#newMsg" styleClass="send-button" text="Send" />
+      <TextField fx:id="txt2send" layoutX="70.0" layoutY="617.0" onKeyPressed="#handleEnter" prefHeight="26.0" prefWidth="233.0" promptText="Texto Plano" styleClass="txt-field" />
+      <MenuButton fx:id="menu" contentDisplay="TOP" layoutX="14.0" layoutY="617.0" mnemonicParsing="false" popupSide="TOP" text="...">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#handleTextoPlano" text="Texto Plano" />
+          <MenuItem mnemonicParsing="false" onAction="#handleFirmarMensaje" text="Firmar Mensaje" />
+          <MenuItem mnemonicParsing="false" onAction="#handleSobreDigital" text="Sobre Digital" />
+          <MenuItem mnemonicParsing="false" onAction="#handleEncriptarMensaje" text="Encriptar Mensaje" />
+        </items>
+      </MenuButton>
    </children>
 </Pane>

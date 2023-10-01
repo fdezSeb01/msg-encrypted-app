@@ -23,7 +23,7 @@
 }
 
 .header-label{
-    -fx-background-color: white;
+    -fx-background-color: rgba(255, 255, 255, 0);
 }
 
 .scroll-pane{

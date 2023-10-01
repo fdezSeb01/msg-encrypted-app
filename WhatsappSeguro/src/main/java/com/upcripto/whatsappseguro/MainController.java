@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,9 @@ public class MainController {
 
     @FXML
     private ImageView GoBackbtn;
+
+    @FXML
+    private MenuButton menu;
 
     private static MainController instance;
 
@@ -186,5 +190,29 @@ public class MainController {
                 }
             });       
         }
+    }
+
+    //------------------------------------------------------------------------------------------------
+    // Menu controller
+    @FXML
+    private void handleTextoPlano() {
+        txt2send.promptTextProperty().set("Texto Plano");
+    }
+
+    @FXML
+    private void handleFirmarMensaje() {
+        txt2send.promptTextProperty().set("Mensaje Firmado");
+
+    }
+    @FXML
+    private void handleSobreDigital() {
+        txt2send.promptTextProperty().set("Sobre Digital");
+
+    }
+
+    @FXML
+    private void handleEncriptarMensaje() {
+        txt2send.promptTextProperty().set("Mensaje Encriptado");
+
     }
 }
