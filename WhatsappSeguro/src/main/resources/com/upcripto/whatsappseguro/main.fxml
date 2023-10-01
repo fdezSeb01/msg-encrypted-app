@@ -47,5 +47,68 @@
           <MenuItem mnemonicParsing="false" onAction="#handleEncriptarMensaje" text="Encriptar Mensaje" />
         </items>
       </MenuButton>
+            <Pane fx:id="FirmarPopUp" layoutX="88.0" layoutY="235.0" prefHeight="200.0" prefWidth="200.0" styleClass="new-num-pane" visible="false">
+         <children>
+            <Label layoutX="48.0" layoutY="44.0" text="Número:">
+               <font>
+                  <Font name="Monospaced Regular" size="25.0" />
+               </font>
+            </Label>
+            <TextField fx:id="numInput" layoutX="47.0" layoutY="90.0" promptText="1234" styleClass="num-txt-field">
+               <font>
+                  <Font name="Monospaced Regular" size="13.0" />
+               </font>
+            </TextField>
+            <Button fx:id="addBtn" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#checkUser" styleClass="add-btn" text="Añadir" />
+            <Label fx:id="errorNum" layoutX="29.0" layoutY="124.0" text="Número no registrado" textFill="RED" visible="false">
+               <font>
+                  <Font name="Monospaced Regular" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="closeBtn" layoutX="162.0" layoutY="14.0" minWidth="20" mnemonicParsing="false" onAction="#set_invisible_new_num_pane" styleClass="close-btn" text="X" />
+         </children>
+      </Pane>
+      <Pane fx:id="SobrePopUp" layoutX="88.0" layoutY="235.0" prefHeight="200.0" prefWidth="200.0" styleClass="new-num-pane" visible="false">
+         <children>
+            <Label layoutX="48.0" layoutY="44.0" text="Número:">
+               <font>
+                  <Font name="Monospaced Regular" size="25.0" />
+               </font>
+            </Label>
+            <TextField fx:id="numInput" layoutX="47.0" layoutY="90.0" promptText="1234" styleClass="num-txt-field">
+               <font>
+                  <Font name="Monospaced Regular" size="13.0" />
+               </font>
+            </TextField>
+            <Button fx:id="addBtn" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#checkUser" styleClass="add-btn" text="Añadir" />
+            <Label fx:id="errorNum" layoutX="29.0" layoutY="124.0" text="Número no registrado" textFill="RED" visible="false">
+               <font>
+                  <Font name="Monospaced Regular" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="closeBtn" layoutX="162.0" layoutY="14.0" minWidth="20" mnemonicParsing="false" onAction="#set_invisible_new_num_pane" styleClass="close-btn" text="X" />
+         </children>
+      </Pane>
+      <Pane fx:id="EncriptarPopUp" layoutX="88.0" layoutY="235.0" prefHeight="200.0" prefWidth="200.0" styleClass="new-num-pane" visible="false">
+         <children>
+            <Label layoutX="48.0" layoutY="44.0" text="Número:">
+               <font>
+                  <Font name="Monospaced Regular" size="25.0" />
+               </font>
+            </Label>
+            <TextField fx:id="numInput" layoutX="47.0" layoutY="90.0" promptText="1234" styleClass="num-txt-field">
+               <font>
+                  <Font name="Monospaced Regular" size="13.0" />
+               </font>
+            </TextField>
+            <Button fx:id="addBtn" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#checkUser" styleClass="add-btn" text="Añadir" />
+            <Label fx:id="errorNum" layoutX="29.0" layoutY="124.0" text="Número no registrado" textFill="RED" visible="false">
+               <font>
+                  <Font name="Monospaced Regular" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="closeBtn" layoutX="162.0" layoutY="14.0" minWidth="20" mnemonicParsing="false" onAction="#set_invisible_new_num_pane" styleClass="close-btn" text="X" />
+         </children>
+      </Pane>
    </children>
 </Pane>

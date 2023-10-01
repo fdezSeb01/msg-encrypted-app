@@ -197,22 +197,54 @@ public class MainController {
     @FXML
     private void handleTextoPlano() {
         txt2send.promptTextProperty().set("Texto Plano");
+        //No necesita nada extra
+        //gris - verde
     }
 
     @FXML
     private void handleFirmarMensaje() {
         txt2send.promptTextProperty().set("Mensaje Firmado");
+        // 1. Generar llave publica y privada
+        // 2. Generar resumen con la función hash
+        // 3. Encriptar resumen con llave privada
+        // 4. Mandar mensaje normal junto con hash cifrado
+        // 5. El que lo recibe ve el mensaje normal de color azul
+        // 6. Si el resumen generado de mensaje recibido es igual al resumen desencriptado -> all good
 
+        // Implementacion al mandar
+        // 1. Sale hash generado sin cifrar
+        // 2. Sale una opcion para escoger llave privada
+        // 3. Se actualize el hash encriptado
+
+        // Implementacion al recibir
+        // 1. Al picarle al mensaje le sale un pop up donde viene un campo chiquito para llave, hash encriptado y label con hash generado del mensaje recibido
     }
+
     @FXML
     private void handleSobreDigital() {
         txt2send.promptTextProperty().set("Sobre Digital");
+        // 1. Se genera una llave simetrica aleatoria "rndKey"
+        // 2. Se tiene la llave publica del receptro "recKey"
+        // 3. Con la "rndKey" se encripta el mensaje y con la "recKey" se encripta la "rndKey" -> "rndEncKey"
+        // 4. Se manda el mensaje cifrado (con "rndKey") junto con la llave "rndEncKey"
 
+        // 5. El que lo recibe tiene el mensaje encriptado con la "rndKey" y la llave "rndEncKey"
+        // 6. El receptor desencripta la llave "rndEncKey" con su llave privada -> "rndKey"
+        // 7. Finalemnte como "rndKey" es simetrica se usa esta misma para desencriptar el mensaje
+
+        // Implementacion al mandar
+        // 1. Se genera la llave aleatoria
+        // 2. Hay un campo para meter la llave publica del recipient
+        
+        // Implementacion al recibir
+        // 1. Hay un campo para introducir la llave privada
+        // 2. bóton para decifrar
     }
 
     @FXML
     private void handleEncriptarMensaje() {
         txt2send.promptTextProperty().set("Mensaje Encriptado");
-
+        // 1. Hay un toggle para si es simetrico
+        // 2. un campo para meter llave (simetrica o privada dependiendo el caso)
     }
 }
