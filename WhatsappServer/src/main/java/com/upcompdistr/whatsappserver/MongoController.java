@@ -41,12 +41,13 @@ public class MongoController {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");
             MongoCollection<Document> usersCollection = database.getCollection("Users");
 
+            String pubKey = EncryptionsController.generateRndKey();
             Document userDocument = new Document("user_id", user_id)
                     .append("name", name)
                     .append("phone_num", phone_num)
                     .append("profile_pic", profile_pic)
-                    .append("pubKey", EncryptionsController.generateRndKey())
-                    .append("privKey", EncryptionsController.generatePrivKey(user_id));
+                    .append("pubKey", pubKey)
+                    .append("privKey", EncryptionsController.generatePrivKey(pubKey,user_id));
 
             usersCollection.insertOne(userDocument);
             System.out.println("Usuario creado con id: "+user_id + " y nombre: "+name);
@@ -247,7 +248,10 @@ public class MongoController {
                         .append("text", "")
                         .append("time", "")
                         .append("sender_id", -1)
-                        .append("message_id", -1))
+                        .append("message_id", -1)
+                        .append("hash", "")
+                        .append("encRndKey", "")
+                        .append("msgType", -1))
                     .append("messages", new ArrayList<>());
 
                 usersCollection.insertOne(newChatDocument);

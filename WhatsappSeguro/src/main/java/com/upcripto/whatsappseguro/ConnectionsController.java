@@ -150,8 +150,6 @@ public class ConnectionsController {
                             case "loginResponse":
                                 handleLoginValidationResponse(jsonObject.get("user_id").getAsString());
                                 break;
-                            case "messageIncoming":
-                                break;
                             case "ContactsRecieved":
                                 handleContactsRecieved(jsonObject);
                                 break;
@@ -280,6 +278,9 @@ public class ConnectionsController {
         String[] messages;
         String[] senders;
         String[] times; 
+        String[] hashes;
+        String[] encRndKeys;
+        int[] types; 
         
         JsonObject chat = obj.get("chat").getAsJsonObject();
         JsonArray messagesArray = chat.get("messages").getAsJsonArray();
@@ -288,6 +289,9 @@ public class ConnectionsController {
         messages = new String[n];
         senders = new String[n];
         times = new String[n];
+        hashes = new String[n];
+        encRndKeys = new String[n];
+        types = new int[n];
 
         List<JsonObject> sortedMessages = new ArrayList<>();
         for (JsonElement messageElement : messagesArray) {
@@ -302,9 +306,12 @@ public class ConnectionsController {
             messages[i] = messageObj.get("text").getAsString();
             senders[i] = String.valueOf(messageObj.get("sender_id").getAsInt());
             times[i] = messageObj.get("time").getAsString();
+            hashes[i] = messageObj.get("hash").getAsString();
+            encRndKeys[i] = messageObj.get("encRndKey").getAsString();
+            types[i] = messageObj.get("type").getAsInt();
         }
         
-        MainController.recieveMessages(messages, senders, times);
+        MainController.recieveMessages(messages, senders, times,hashes,encRndKeys,types);
 
     }
 
@@ -321,8 +328,11 @@ public class ConnectionsController {
         String msg = obj.get("msg").getAsString();
         String time = obj.get("time").getAsString();
         String id = obj.get("chat_id").getAsString();
+        String hash = obj.get("hash").getAsString();
+        String encRndKey = obj.get("encRndKey").getAsString();
+        int type = obj.get("type").getAsInt();
 
-        MainController.recieveMsg(msg, time,id);
+        MainController.recieveMsg(msg, time,id,hash,encRndKey,type);
     }
 
     public static void requestDestinationPubKey(int user_id){

@@ -48,7 +48,7 @@
             <MenuItem mnemonicParsing="false" onAction="#handleEncriptarAsimetrico" text="Encriptado Asimetrico" />
         </items>
       </MenuButton>
-      <Pane fx:id="SimetricoPopUp" layoutX="88.0" layoutY="235.0" prefHeight="149.0" prefWidth="192.0" styleClass="new-num-pane">
+      <Pane fx:id="SimetricoPopUp" layoutX="88.0" layoutY="235.0" prefHeight="149.0" prefWidth="192.0" styleClass="new-num-pane" visible="false">
          <children>
             <Label layoutX="43.0" layoutY="29.0" text="Simétrico">
                <font>
@@ -62,6 +62,46 @@
             </TextField>
             <Button fx:id="okBtn" layoutX="77.0" layoutY="107.0" mnemonicParsing="false" onAction="#set_sim_key" styleClass="add-btn" text="Ok" />
             <Button fx:id="closeBtn" layoutX="159.0" layoutY="5.0" minWidth="20" mnemonicParsing="false" onAction="#set_invisible_sim_popup_pane" styleClass="close-btn" text="X" />
+         </children>
+      </Pane>
+      <Pane fx:id="FirmaPopUp" layoutX="20.0" layoutY="235.0" prefHeight="149.0" prefWidth="320.0" styleClass="new-num-pane" visible="false">
+         <children>
+            <Label layoutX="124.0" layoutY="1.0" text="Firma:">
+               <font>
+                  <Font name="Monospaced Regular" size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="okBtn" layoutX="135.0" layoutY="116.0" mnemonicParsing="false" onAction="#close_firma_pop_up" styleClass="add-btn" text="Ok" />
+            <Label layoutX="130.0" layoutY="56.0" text="Hash:">
+               <font>
+                  <Font name="Monospaced Regular" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="firma_label" layoutX="12.0" layoutY="36.0" prefHeight="16.0" prefWidth="297.0" text="firma">
+               <font>
+                  <Font name="Monospaced Regular" size="11.0" />
+               </font>
+            </Label>
+            <Label fx:id="hash_label" layoutX="12.0" layoutY="89.0" prefHeight="16.0" prefWidth="297.0" text="hash">
+               <font>
+                  <Font name="Monospaced Regular" size="11.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="DecifrarSimPopUp" layoutX="57.0" layoutY="235.0" prefHeight="129.0" prefWidth="255.0" styleClass="new-num-pane" visible="false">
+         <children>
+            <Label fx:id="msg_label" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="38.0" prefHeight="20.0" prefWidth="233.0" text="Mensaje">
+               <font>
+                  <Font name="Monospaced Regular" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="simKeyInput" layoutX="73.0" layoutY="78.0" promptText="Llave" styleClass="num-txt-field">
+               <font>
+                  <Font name="Monospaced Regular" size="13.0" />
+               </font>
+            </TextField>
+            <Button fx:id="closeBtn" layoutX="221.0" layoutY="6.0" minWidth="20" mnemonicParsing="false" onAction="#close_decifrar_pop_up" styleClass="close-btn" text="X" />
          </children>
       </Pane>
    </children>

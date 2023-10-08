@@ -6,11 +6,35 @@
 }
 
 .left{
+    -fx-background-color: rgb(212, 212, 212);
+}
+
+.plain{
+    
     -fx-background-color: rgb(174, 217, 219);
 }
 
-.right{
-    -fx-background-color: rgb(212, 212, 212);
+.signed{
+    -fx-background-color: rgb(15, 131, 255);
+}
+
+.bad{
+    -fx-background-color: rgb(255, 55, 55);
+
+}
+
+.digital-envelope{
+    -fx-background-color: rgb(255, 243, 70);
+
+}
+
+.symmetric{
+    -fx-background-color: rgb(144, 55, 0);
+
+}
+
+.asymetric{
+    -fx-background-color: rgb(231, 80, 244);
 }
 
 .main-screen{

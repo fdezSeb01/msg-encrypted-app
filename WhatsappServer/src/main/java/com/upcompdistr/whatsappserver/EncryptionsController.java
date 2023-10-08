@@ -1,7 +1,5 @@
 package com.upcompdistr.whatsappserver;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 public class EncryptionsController {
@@ -14,18 +12,10 @@ public class EncryptionsController {
         return String.valueOf(randomNumber);
     }
 
-    public static String generatePrivKey(int user_id){
-        Random random = new Random();
-        int randomNumber = random.nextInt(abc.length());
-        return SimpleSust(String.valueOf(randomNumber), user_id);
+    public static String generatePrivKey(String pubKey, int user_id){
+        int privKey = abc.length() - Integer.parseInt(pubKey);
+        return SimpleSust(String.valueOf(privKey), user_id);
         //cada user tiene una llave provada encriptada con su numero de usuario
-    }
-
-    public static String getHash(String Msg) throws NoSuchAlgorithmException{
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        messageDigest.update(Msg.getBytes());
-        String stringHash = new String(messageDigest.digest());
-        return stringHash;
     }
 
     public static String SimpleSust(String text, int key){
