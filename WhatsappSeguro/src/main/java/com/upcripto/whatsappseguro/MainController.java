@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.ScrollPane;
@@ -14,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
 public class MainController {
@@ -21,6 +23,7 @@ public class MainController {
     private static int chatIdentifier= -1;
     private static int userID=-1;
     private static String chat_id = "";
+    private static int pubKey=-1;
 
     private static String userName="Wasap";
     @FXML
@@ -43,6 +46,18 @@ public class MainController {
 
     @FXML
     private MenuButton menu;
+
+    @FXML
+    private Button okBtn;
+
+    @FXML
+    private Button closeBtn;
+
+    @FXML
+    private Pane SimetricoPopUp;
+
+    @FXML
+    private TextField keyInput;
 
     private static MainController instance;
 
@@ -204,47 +219,37 @@ public class MainController {
     @FXML
     private void handleFirmarMensaje() {
         txt2send.promptTextProperty().set("Mensaje Firmado");
-        // 1. Generar llave publica y privada
-        // 2. Generar resumen con la función hash
-        // 3. Encriptar resumen con llave privada
-        // 4. Mandar mensaje normal junto con hash cifrado
-        // 5. El que lo recibe ve el mensaje normal de color azul
-        // 6. Si el resumen generado de mensaje recibido es igual al resumen desencriptado -> all good
-
-        // Implementacion al mandar
-        // 1. Sale hash generado sin cifrar
-        // 2. Sale una opcion para escoger llave privada
-        // 3. Se actualize el hash encriptado
-
-        // Implementacion al recibir
-        // 1. Al picarle al mensaje le sale un pop up donde viene un campo chiquito para llave, hash encriptado y label con hash generado del mensaje recibido
     }
 
     @FXML
     private void handleSobreDigital() {
         txt2send.promptTextProperty().set("Sobre Digital");
-        // 1. Se genera una llave simetrica aleatoria "rndKey"
-        // 2. Se tiene la llave publica del receptro "recKey"
-        // 3. Con la "rndKey" se encripta el mensaje y con la "recKey" se encripta la "rndKey" -> "rndEncKey"
-        // 4. Se manda el mensaje cifrado (con "rndKey") junto con la llave "rndEncKey"
-
-        // 5. El que lo recibe tiene el mensaje encriptado con la "rndKey" y la llave "rndEncKey"
-        // 6. El receptor desencripta la llave "rndEncKey" con su llave privada -> "rndKey"
-        // 7. Finalemnte como "rndKey" es simetrica se usa esta misma para desencriptar el mensaje
-
-        // Implementacion al mandar
-        // 1. Se genera la llave aleatoria
-        // 2. Hay un campo para meter la llave publica del recipient
-        
-        // Implementacion al recibir
-        // 1. Hay un campo para introducir la llave privada
-        // 2. bóton para decifrar
     }
 
     @FXML
-    private void handleEncriptarMensaje() {
-        txt2send.promptTextProperty().set("Mensaje Encriptado");
-        // 1. Hay un toggle para si es simetrico
-        // 2. un campo para meter llave (simetrica o privada dependiendo el caso)
+    private void handleEncriptarSimetrico() {
+        txt2send.promptTextProperty().set("Encriptado Simetrico");
+        
     }
+
+    @FXML
+    private void handleEncriptarAsimetrico() {
+        txt2send.promptTextProperty().set("Encriptado Asimetrico");
+        SimetricoPopUp.toFront();
+        SimetricoPopUp.setVisible(true);
+        if(pubKey!=-1){
+            keyInput.setText(String.valueOf(pubKey));
+        }
+    }
+
+    @FXML
+    private void set_invisible_sim_popup_pane(){
+        SimetricoPopUp.setVisible(false);
+    }
+
+    @FXML
+    private void set_sim_key(){
+        pubKey = Integer.parseInt(keyInput.getText());
+        SimetricoPopUp.setVisible(false);
+    } 
 }
