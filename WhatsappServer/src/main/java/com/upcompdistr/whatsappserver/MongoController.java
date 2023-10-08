@@ -44,7 +44,9 @@ public class MongoController {
             Document userDocument = new Document("user_id", user_id)
                     .append("name", name)
                     .append("phone_num", phone_num)
-                    .append("profile_pic", profile_pic);
+                    .append("profile_pic", profile_pic)
+                    .append("pubKey", EncryptionsController.generateRndKey())
+                    .append("privKey", EncryptionsController.generatePrivKey(user_id));
 
             usersCollection.insertOne(userDocument);
             System.out.println("Usuario creado con id: "+user_id + " y nombre: "+name);
@@ -194,8 +196,10 @@ public class MongoController {
                 String name = result.getString("name");
                 String phone_num = result.getString("phone_num");
                 String profile_pic = result.getString("profile_pic");
+                String pubKey = result.getString("pubKey");
+                String privKey = result.getString("privKey");
 
-                return new UsersModel(user_id, name, phone_num, profile_pic);
+                return new UsersModel(user_id, name, phone_num, profile_pic,pubKey,privKey);
             } else {
                 // User_id does not exist in the collection
                 return null;
