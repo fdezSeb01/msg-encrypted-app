@@ -167,7 +167,10 @@ public class MongoController {
                     last_message_doc.getString("text"),
                     last_message_doc.getString("time"),
                     last_message_doc.getInteger("message_id"),
-                    last_message_doc.getInteger("sender_id")
+                    last_message_doc.getInteger("sender_id"),
+                    last_message_doc.getString("hash"),
+                    last_message_doc.getString("encRndKey"),
+                    last_message_doc.getInteger("msgType")
                 );
                 List<Message> messages = new ArrayList<>(); // Initialize messages as an empty list
                 //messages is empty for this method since Im not gonna use it
@@ -281,7 +284,10 @@ public class MongoController {
                     last_message_doc.getString("text"),
                     last_message_doc.getString("time"),
                     last_message_doc.getInteger("message_id"),
-                    last_message_doc.getInteger("sender_id")
+                    last_message_doc.getInteger("sender_id"),
+                    last_message_doc.getString("hash"),
+                    last_message_doc.getString("encRndKey"),
+                    last_message_doc.getInteger("msgType")
                 );
                 @SuppressWarnings("unchecked")
                 Document[] messagesArray = ((List<Document>) result.get("messages")).toArray(new Document[0]);
@@ -293,7 +299,10 @@ public class MongoController {
                         message_doc.getString("text"),
                         message_doc.getString("time"),
                         message_doc.getInteger("message_id"),
-                        message_doc.getInteger("sender_id")
+                        message_doc.getInteger("sender_id"),
+                        message_doc.getString("hash"),
+                        message_doc.getString("encRndKey"),
+                        message_doc.getInteger("msgType")
                     );
                     messages.add(message);
                 }
@@ -314,7 +323,7 @@ public class MongoController {
         }
     }
 
-    public static void addMsg(int sender_id, String chat_id, String msg, String time) {
+    public static void addMsg(int sender_id, String chat_id, String msg, String time, String hash, String encRndKey, int msgType) {
         try {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");
             MongoCollection<Document> chatsCollection = database.getCollection("Chats");
@@ -325,22 +334,26 @@ public class MongoController {
             if (chatDocument != null) {
                 // Update the last_message object with new info
                 Document last_message_doc = (Document) chatDocument.get("last_message");
+                int messageId = last_message_doc.getInteger("message_id") + 1;
                 Document last_message = new Document("text", msg)
                     .append("time", time)
-                    .append("message_id", last_message_doc.getInteger("message_id"))
-                    .append("sender_id", sender_id);
+                    .append("message_id", messageId)
+                    .append("sender_id", sender_id)
+                    .append("hash", hash)
+                    .append("encRndKey", encRndKey)
+                    .append("msgType", msgType);
 
                 // Update the last_message field in the document
                 chatDocument.put("last_message", last_message);
-
-                // Increment the message_id
-                int messageId = last_message_doc.getInteger("message_id") + 1;
 
                 // Add the new message to the messages array
                 Document newMessage = new Document("message", new Document("text", msg)
                     .append("time", time)
                     .append("message_id", messageId)
-                    .append("sender_id", sender_id));
+                    .append("sender_id", sender_id)
+                    .append("hash", hash)
+                    .append("encRndKey", encRndKey)
+                    .append("msgType", msgType));
 
                 @SuppressWarnings("unchecked")
                 List<Document> messages = (List<Document>) chatDocument.get("messages");

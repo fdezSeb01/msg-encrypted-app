@@ -7,16 +7,55 @@ class Message {
     private String time;
     private int message_id;
     private int sender_id;
+    private String hash;
+    private String encRndKey;
+    private int msgType;
 
     // Constructors, getters, and setters
     public Message() {}
+    
 
-    public Message(String text, String time, int message_id, int sender_id) {
+    public Message(String text, String time, int message_id, int sender_id, String hash, String encRndKey,
+            int msgType) {
         this.text = text;
         this.time = time;
         this.message_id = message_id;
         this.sender_id = sender_id;
+        this.hash = hash;
+        this.encRndKey = encRndKey;
+        this.msgType = msgType;
     }
+
+
+    public String getHash() {
+        return hash;
+    }
+
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+
+    public String getEncRndKey() {
+        return encRndKey;
+    }
+
+
+    public void setEncRndKey(String encRndKey) {
+        this.encRndKey = encRndKey;
+    }
+
+
+    public int getMsgType() {
+        return msgType;
+    }
+
+
+    public void setMsgType(int msgType) {
+        this.msgType = msgType;
+    }
+
 
     public String getText() {
         return text;

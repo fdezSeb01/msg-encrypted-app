@@ -1,6 +1,7 @@
 package com.upcripto.whatsappseguro;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalTime;
 
 import javafx.event.ActionEvent;
@@ -23,7 +24,8 @@ public class MainController {
     private static int chatIdentifier= -1;
     private static int userID=-1;
     private static String chat_id = "";
-    private static int pubKey=-1;
+    private static int simKey=-1;
+    private static int pubDestKey=-1;
 
     private static String userName="Wasap";
     @FXML
@@ -59,6 +61,8 @@ public class MainController {
     @FXML
     private TextField keyInput;
 
+    private int msgType=1;
+
     private static MainController instance;
 
     public void initialize() {
@@ -76,6 +80,7 @@ public class MainController {
         headerLabel.setText(userName);
         //si ya existe el chat -> nada        //si no existe el chat -> crear empty chat (last_message con todo en null)
         ConnectionsController.checkIfChatExistsAddIfNot(userID, chatIdentifier); //if any is -1 abort
+        ConnectionsController.requestDestinationPubKey(chatIdentifier);
         
     }
 
@@ -83,6 +88,10 @@ public class MainController {
         chat_id = id;
         //cargar mesnajes
         ConnectionsController.requestLoadMessages(chat_id);
+    }
+
+    public static void setPubDestKey(String key){
+        pubDestKey = Integer.parseInt(key);
     }
 
     public static void recieveMessages(String[] messages, String[] senders, String[] times){
@@ -146,7 +155,43 @@ public class MainController {
         int minute = currentTime.getMinute();
         String time = String.format("%02d:%02d", hour, minute);
         String msg = txt2send.getText()+"   "+time;
-        ConnectionsController.sendMsg2Server(chat_id,userID, txt2send.getText(),time,chatIdentifier);
+
+        String msgForServer=txt2send.getText();
+        String hash="";
+        String encRndKey="";
+        switch(msgType){
+            case 1: //texto plano
+                break;
+            case 2: //msj firmado
+                try {
+                    hash = EncryptionsController.getHash(msgForServer);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 3: //sobre digital
+                String rndKey = EncryptionsController.generateRndKey();
+                msgForServer=EncryptionsController.SimpleSust(msgForServer,Integer.parseInt(rndKey));
+                try {
+                    hash = EncryptionsController.getHash(msgForServer);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                hash = EncryptionsController.SimpleSust(hash, Integer.parseInt(rndKey));
+                encRndKey = EncryptionsController.SimpleSust(rndKey, pubDestKey);
+                break;
+            case 4: //simetrico
+                msgForServer=EncryptionsController.SimpleSust(msgForServer, simKey);
+                break;
+            case 5: //asimetrico
+                msgForServer=EncryptionsController.SimpleSust(msgForServer, pubDestKey);
+                break;
+            default:
+                break;
+        }
+
+
+        ConnectionsController.sendMsg2Server(chat_id,userID, msgForServer, time,chatIdentifier,hash,encRndKey,msgType);
         Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
         Label newText = new Label(msg);
         newText.getStyleClass().add("message");
@@ -185,6 +230,7 @@ public class MainController {
         chatIdentifier = chat_num;
         userID=user_id;
         userName = name;
+
         System.out.println("chatting "+ userID + " con "+chatIdentifier +" " + userName);
     }
 
@@ -212,33 +258,36 @@ public class MainController {
     @FXML
     private void handleTextoPlano() {
         txt2send.promptTextProperty().set("Texto Plano");
-        //No necesita nada extra
-        //gris - verde
+        msgType=1;
     }
 
     @FXML
     private void handleFirmarMensaje() {
         txt2send.promptTextProperty().set("Mensaje Firmado");
+        msgType=2;
     }
 
     @FXML
     private void handleSobreDigital() {
         txt2send.promptTextProperty().set("Sobre Digital");
+        msgType=3;
     }
 
     @FXML
     private void handleEncriptarSimetrico() {
         txt2send.promptTextProperty().set("Encriptado Simetrico");
+        msgType=4;
         
     }
 
     @FXML
     private void handleEncriptarAsimetrico() {
         txt2send.promptTextProperty().set("Encriptado Asimetrico");
+        msgType=5;
         SimetricoPopUp.toFront();
         SimetricoPopUp.setVisible(true);
-        if(pubKey!=-1){
-            keyInput.setText(String.valueOf(pubKey));
+        if(simKey!=-1){
+            keyInput.setText(String.valueOf(simKey));
         }
     }
 
@@ -249,7 +298,7 @@ public class MainController {
 
     @FXML
     private void set_sim_key(){
-        pubKey = Integer.parseInt(keyInput.getText());
+        simKey = Integer.parseInt(keyInput.getText());
         SimetricoPopUp.setVisible(false);
     } 
 }

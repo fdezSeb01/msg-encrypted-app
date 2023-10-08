@@ -9,6 +9,8 @@ import java.util.UUID;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mongodb.Mongo;
+
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,11 +92,29 @@ class IncomingMsg{
     String msg;
     String time;
     String chat_id;
-    public IncomingMsg(String msg, String time, String chat_id) {
+    String hash;
+    String encRndKey;
+    int msgType;
+    public IncomingMsg(String msg, String time, String chat_id, String hash, String encRndKey,
+            int msgType) {
+        this.action = "incomingMsg";
         this.msg = msg;
         this.time = time;
-        action = "incomingMsg";
         this.chat_id = chat_id;
+        this.hash = hash;
+        this.encRndKey = encRndKey;
+        this.msgType = msgType;
+    }
+
+    
+}
+
+class PubKeyWrapper{
+    String action;
+    String pubKey;
+    public PubKeyWrapper(String pubKey) {
+        this.action = "pubKey_attached";
+        this.pubKey = pubKey;
     }
     
 }
@@ -186,6 +206,9 @@ class ClientHandler extends Thread {
                     case "addUser":
                         handleAddingUser2Map(jsonObject.get("user_id").getAsInt());
                         break;
+                    case "requestPubKey":
+                        hanldePubKeyRequest(jsonObject.get("user_id").getAsInt(),out);
+                        break;
                     default:
                         handleUnsupportedAction(action);
                         break;
@@ -221,12 +244,15 @@ class ClientHandler extends Thread {
         String chat_id = obj.get("chat_id").getAsString();
         String msg = obj.get("msg").getAsString();
         String time = obj.get("time").getAsString();
+        String hash = obj.get("hash").getAsString();
+        String encRndKey= obj.get("encRndKey").getAsString();
+        int msgType= obj.get("msgType").getAsInt();
         
-        IncomingMsg im = new IncomingMsg(msg,time,chat_id);
+        IncomingMsg im = new IncomingMsg(msg,time,chat_id,hash,encRndKey,msgType);
         sendObj2SpecificClient(destination_id, im);
         System.out.println("Mensaje mandado de usuario "+sender_id +" a "+destination_id);
         //falta agregar mensaje a messages y actualizar last_message
-        MongoController.addMsg(sender_id, chat_id, msg, time);
+        MongoController.addMsg(sender_id, chat_id, msg, time,hash,encRndKey,msgType);
         
     }
 
@@ -344,6 +370,13 @@ class ClientHandler extends Thread {
         WhatsappServer.mapClientId_UserId.put(clientId, user_id);
         String name = MongoController.getNameFromUser(user_id);
         System.out.println("Usuario registrado a socket, user_id: "+user_id +", nombre: "+name +", clientId: "+clientId);
+    }
+
+    private static void hanldePubKeyRequest(int user_id, PrintWriter out){
+        UsersModel user = MongoController.getUserById(user_id);
+        String pubKey = user.getPubKey();
+        PubKeyWrapper pkw = new PubKeyWrapper(pubKey);
+        sendObj2Client(pkw, out);
     }
 }
 

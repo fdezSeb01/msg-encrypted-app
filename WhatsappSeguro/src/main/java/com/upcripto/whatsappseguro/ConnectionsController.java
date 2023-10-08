@@ -33,12 +33,19 @@ class newMsg{
     public String msg;
     public String time;
     public int destination_id;
-    public newMsg(String chat_id, int sender_id, String msg, String time, int destination_id) {
+    public String hash;
+    public String encRndKey;
+    public int msgType;
+
+    public newMsg(String chat_id, int sender_id, String msg, String time, int destination_id, String hash, String encRndKey, int msgType) {
         this.chat_id = chat_id;
         this.sender_id = sender_id;
         this.msg = msg;
         this.time = time;
         this.destination_id = destination_id;
+        this.hash = hash;
+        this.encRndKey = encRndKey;
+        this.msgType=msgType;
         action = "newMsg";
 
     }
@@ -90,6 +97,15 @@ class addUser{
     public addUser(int user_id) {
         this.user_id = user_id;
         this.action = "addUser";
+    }
+}
+
+class requestPubKey{
+    int user_id;
+    String action;
+    public requestPubKey(int user_id){
+        this.user_id = user_id;
+        this.action = "requestPubKey";
     }
 }
 
@@ -154,6 +170,9 @@ public class ConnectionsController {
                             case "incomingMsg":
                                 hanldeIncomingMessage(jsonObject);
                                 break;
+                            case "pubKey_attached":
+                                handlePubKeyRecieved(jsonObject.get("pubKey").getAsString());
+                                break;
                             default:
                                 handleUnsupportedAction(action);
                                 break;
@@ -165,8 +184,8 @@ public class ConnectionsController {
                 }
     }
 
-    public static void sendMsg2Server(String chat_id, int sender_id, String text, String time, int destination_id) {
-        newMsg msg = new newMsg(chat_id, sender_id, text,time, destination_id);
+    public static void sendMsg2Server(String chat_id, int sender_id, String text, String time, int destination_id, String hash, String encRndKey, int msgType) {
+        newMsg msg = new newMsg(chat_id, sender_id, text,time, destination_id, hash,encRndKey,msgType);
         talk2server(msg);
     }
     
@@ -199,6 +218,8 @@ public class ConnectionsController {
     public static void handleLoginValidationResponse(String response) throws IOException{
         LoginController.ValidationGotten(Integer.parseInt(response));
     }
+
+
 
     private static void handleContactsRecieved(JsonObject obj) throws IOException {
         JsonArray contactsArray = obj.getAsJsonArray("contacts");        
@@ -302,5 +323,14 @@ public class ConnectionsController {
         String id = obj.get("chat_id").getAsString();
 
         MainController.recieveMsg(msg, time,id);
+    }
+
+    public static void requestDestinationPubKey(int user_id){
+        requestPubKey rpk = new requestPubKey(user_id);
+        talk2server(rpk);
+    }
+
+    public static void handlePubKeyRecieved(String pubKey){
+        MainController.setPubDestKey(pubKey);
     }
 }
