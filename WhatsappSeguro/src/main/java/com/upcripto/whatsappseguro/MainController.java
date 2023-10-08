@@ -101,6 +101,7 @@ public class MainController {
         //si ya existe el chat -> nada        //si no existe el chat -> crear empty chat (last_message con todo en null)
         ConnectionsController.checkIfChatExistsAddIfNot(userID, chatIdentifier); //if any is -1 abort
         ConnectionsController.requestDestinationPubKey(chatIdentifier);
+        ConnectionsController.requestPrivKey(userID);
         
     }
 

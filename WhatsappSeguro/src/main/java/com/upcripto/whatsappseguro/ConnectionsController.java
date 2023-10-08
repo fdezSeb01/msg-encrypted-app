@@ -109,6 +109,15 @@ class requestPubKey{
     }
 }
 
+class requestPrivKey{
+    int user_id;
+    String action;
+    public requestPrivKey(int user_id){
+        this.user_id = user_id;
+        this.action = "requestPrivKey";
+    }
+}
+
 
 
 public class ConnectionsController {
@@ -170,6 +179,9 @@ public class ConnectionsController {
                                 break;
                             case "pubKey_attached":
                                 handlePubKeyRecieved(jsonObject.get("pubKey").getAsString());
+                                break;
+                            case "privKey_attached":
+                                handlePrivKeyRecieved(jsonObject.get("privKey").getAsString());
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -342,5 +354,14 @@ public class ConnectionsController {
 
     public static void handlePubKeyRecieved(String pubKey){
         MainController.setPubDestKey(pubKey);
+    }
+
+    public static void requestPrivKey(int user_id){
+        requestPrivKey rpk = new requestPrivKey(user_id);
+        talk2server(rpk);
+    }
+
+    public static void handlePrivKeyRecieved(String privKey){
+        EncryptionsController.setMyPrivKey(privKey);
     }
 }

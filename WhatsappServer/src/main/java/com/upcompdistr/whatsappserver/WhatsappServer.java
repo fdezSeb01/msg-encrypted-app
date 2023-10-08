@@ -119,6 +119,16 @@ class PubKeyWrapper{
     
 }
 
+class PrivKeyWrapper{
+    String action;
+    String privKey;
+    public PrivKeyWrapper(String privKey) {
+        this.action = "privKey_attached";
+        this.privKey = privKey;
+    }
+    
+}
+
 public class WhatsappServer {
     private static final int PORT = 5109;
     public static Map<String, Socket> connectedClients = new HashMap<>();
@@ -208,6 +218,9 @@ class ClientHandler extends Thread {
                         break;
                     case "requestPubKey":
                         hanldePubKeyRequest(jsonObject.get("user_id").getAsInt(),out);
+                        break;
+                    case "requestPrivKey":
+                        hanldePrivKeyRequest(jsonObject.get("user_id").getAsInt(),out);
                         break;
                     default:
                         handleUnsupportedAction(action);
@@ -376,6 +389,13 @@ class ClientHandler extends Thread {
         UsersModel user = MongoController.getUserById(user_id);
         String pubKey = user.getPubKey();
         PubKeyWrapper pkw = new PubKeyWrapper(pubKey);
+        sendObj2Client(pkw, out);
+    }
+
+    private static void hanldePrivKeyRequest(int user_id, PrintWriter out){
+        UsersModel user = MongoController.getUserById(user_id);
+        String privKey = user.getPrivKey();
+        PrivKeyWrapper pkw = new PrivKeyWrapper(privKey);
         sendObj2Client(pkw, out);
     }
 }
