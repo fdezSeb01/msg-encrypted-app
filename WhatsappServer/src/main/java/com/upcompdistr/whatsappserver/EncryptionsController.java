@@ -16,7 +16,6 @@ public class EncryptionsController {
 
     public static String generatePrivKey(String pubKey, int user_id){
         int privKey = abc.length() - Integer.parseInt(pubKey);
-        System.out.println("La pub es "+pubKey +" y La lenght es "+abc.length()+" por lo que la priv es " + privKey);
         return SimpleSust(String.valueOf(privKey), String.valueOf(user_id));
         //cada user tiene una llave provada encriptada con su numero de usuario
     }

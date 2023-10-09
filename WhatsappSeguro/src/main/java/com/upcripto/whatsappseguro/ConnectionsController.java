@@ -181,7 +181,7 @@ public class ConnectionsController {
                                 handlePubKeyRecieved(jsonObject.get("pubKey").getAsString());
                                 break;
                             case "privKey_attached":
-                                handlePrivKeyRecieved(jsonObject.get("privKey").getAsString());
+                                handlePrivKeyRecieved(jsonObject.get("privKey").getAsString(),jsonObject.get("user_id").getAsInt());
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -320,7 +320,7 @@ public class ConnectionsController {
             times[i] = messageObj.get("time").getAsString();
             hashes[i] = messageObj.get("hash").getAsString();
             encRndKeys[i] = messageObj.get("encRndKey").getAsString();
-            types[i] = messageObj.get("type").getAsInt();
+            types[i] = messageObj.get("msgType").getAsInt();
         }
         
         MainController.recieveMessages(messages, senders, times,hashes,encRndKeys,types);
@@ -356,12 +356,12 @@ public class ConnectionsController {
         MainController.setPubDestKey(pubKey);
     }
 
-    public static void requestPrivKey(int user_id){
+    public static void requestPrivKey_method(int user_id){
         requestPrivKey rpk = new requestPrivKey(user_id);
         talk2server(rpk);
     }
 
-    public static void handlePrivKeyRecieved(String privKey){
-        EncryptionsController.setMyPrivKey(privKey);
+    public static void handlePrivKeyRecieved(String privKey, int user_id){
+        EncryptionsController.setMyPrivKey(privKey, String.valueOf(user_id));
     }
 }

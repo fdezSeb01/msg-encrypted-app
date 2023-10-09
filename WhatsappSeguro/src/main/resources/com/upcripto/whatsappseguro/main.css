@@ -11,30 +11,30 @@
 
 .plain{
     
-    -fx-background-color: rgb(174, 217, 219);
+    -fx-background-color: rgb(181, 247, 179);
 }
 
 .signed{
-    -fx-background-color: rgb(15, 131, 255);
+    -fx-background-color: rgb(132, 179, 230);
 }
 
 .bad{
-    -fx-background-color: rgb(255, 55, 55);
+    -fx-background-color: rgb(227, 110, 110);
 
 }
 
 .digital-envelope{
-    -fx-background-color: rgb(255, 243, 70);
+    -fx-background-color: rgb(227, 220, 131);
 
 }
 
 .symmetric{
-    -fx-background-color: rgb(144, 55, 0);
+    -fx-background-color: rgb(146, 117, 99);
 
 }
 
 .asymetric{
-    -fx-background-color: rgb(231, 80, 244);
+    -fx-background-color: rgb(213, 146, 220);
 }
 
 .main-screen{

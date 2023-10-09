@@ -1,7 +1,5 @@
 package com.upcripto.whatsappseguro;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 public class EncryptionsController {
@@ -9,8 +7,8 @@ public class EncryptionsController {
     private static String abc = "QWERTYUIOPASDFGHJKLÑZXCVBNM0123456789zxcvbnmasdfghjklñqwertyuiop";
     private static int myPrivKey=-1;
     
-    public static void setMyPrivKey(String key){
-        myPrivKey = Integer.parseInt(key);
+    public static void setMyPrivKey(String key,String user_id){
+        myPrivKey = Integer.parseInt(decryptSimetric(key,user_id));
     }
 
     public static String generateRndKey(){
@@ -21,16 +19,16 @@ public class EncryptionsController {
 
     public static String generatePrivKey(String pubKey, int user_id){
         int privKey = abc.length() - Integer.parseInt(pubKey);
-        System.out.println("La pub es "+pubKey +" y La lenght es "+abc.length()+" por lo que la priv es " + privKey);
         return SimpleSust(String.valueOf(privKey), String.valueOf(user_id));
         //cada user tiene una llave provada encriptada con su numero de usuario
     }
 
-    public static String getHash(String Msg) throws NoSuchAlgorithmException{
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        messageDigest.update(Msg.getBytes());
-        String stringHash = new String(messageDigest.digest());
-        return stringHash;
+    public static String getHash(String text) {
+        int hash=0;
+        for(int i=0;i<text.length();i++){
+            hash += (int)text.charAt(i);
+        }
+        return String.valueOf(hash);
     }
 
     public static String SimpleSust(String text, String key_str){

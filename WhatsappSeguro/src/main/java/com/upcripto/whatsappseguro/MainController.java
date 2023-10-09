@@ -101,7 +101,7 @@ public class MainController {
         //si ya existe el chat -> nada        //si no existe el chat -> crear empty chat (last_message con todo en null)
         ConnectionsController.checkIfChatExistsAddIfNot(userID, chatIdentifier); //if any is -1 abort
         ConnectionsController.requestDestinationPubKey(chatIdentifier);
-        ConnectionsController.requestPrivKey(userID);
+        ConnectionsController.requestPrivKey_method(userID);
         
     }
 
@@ -158,7 +158,7 @@ public class MainController {
         newText.setLayoutY((i==0) ? Yheight : Yheight+37);
 
 
-        switch(msgType){
+        switch(type){
             case 1:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
@@ -212,7 +212,7 @@ public class MainController {
         newText.setLayoutY((i==0) ? Yheight : Yheight+7);
 
 
-        switch(msgType){
+        switch(type){
             case 1:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
@@ -258,20 +258,13 @@ public class MainController {
             case 1: //texto plano
                 break;
             case 2: //msj firmado
-                try {
-                    hash = EncryptionsController.getHash(msgForServer);
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+                hash = EncryptionsController.getHash(msgForServer);
+                hash = EncryptionsController.SimpleSust(hash,pubDestKey);
                 break;
             case 3: //sobre digital
                 String rndKey = EncryptionsController.generateRndKey();
                 msgForServer=EncryptionsController.SimpleSust(msgForServer,rndKey);
-                try {
-                    hash = EncryptionsController.getHash(msgForServer);
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+                hash = EncryptionsController.getHash(msgForServer);
                 hash = EncryptionsController.SimpleSust(hash,rndKey);
                 encRndKey = EncryptionsController.SimpleSust(rndKey, pubDestKey);
                 break;
@@ -294,6 +287,32 @@ public class MainController {
         newText.setLayoutX(14f);
         Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
         newText.setLayoutY(Yheight+7);
+        newText.setId(EncryptionsController.getHash(msgForServer));
+        switch(msgType){
+            case 1:
+                newText.setOnMouseClicked(ev ->{
+                    see_signature(ev);
+                });
+            case 2:
+                newText.setOnMouseClicked(ev ->{
+                    see_signature(ev);
+                });
+            case 3:
+                newText.setOnMouseClicked(ev ->{
+                    see_signature(ev);
+                });
+            case 4:
+                newText.setOnMouseClicked(ev ->{
+                    see_decifrar_pop_up(ev);
+                });
+            case 5:
+                newText.setOnMouseClicked(ev ->{
+                    see_signature(ev);
+                });
+            default:
+                break;
+        }
+
         mainPane.getChildren().add(newText);
         adjustScrollPaneHeight(newText);
         txt2send.setText(null);
@@ -411,12 +430,10 @@ public class MainController {
 
     private static String getColor(int msgType, String hash, String msg){
         String gen_hash="";
-        try {
-            gen_hash = EncryptionsController.getHash(msg);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        gen_hash = EncryptionsController.getHash(msg);
+        if(!gen_hash.equals(hash)){
+            msgType =-1;
         }
-        if(gen_hash != hash) msgType =-1;
         switch(msgType){
             case 1:
                 return "plain";
@@ -494,11 +511,7 @@ public class MainController {
         String hash_recieved = ((Label) event.getSource()).getId();
         String msg = ((Label) event.getSource()).getText().split("   ")[0];
         String hash_generated="";
-        try {
-            hash_generated = EncryptionsController.getHash(msg);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        hash_generated = EncryptionsController.getHash(msg);
         FirmaPopUp.setVisible(true);
         firma_label.setText(hash_recieved);
         hash_label.setText(hash_generated);

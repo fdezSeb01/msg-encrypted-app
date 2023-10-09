@@ -122,9 +122,11 @@ class PubKeyWrapper{
 class PrivKeyWrapper{
     String action;
     String privKey;
-    public PrivKeyWrapper(String privKey) {
+    int user_id;
+    public PrivKeyWrapper(String privKey, int user_id) {
         this.action = "privKey_attached";
         this.privKey = privKey;
+        this.user_id = user_id;
     }
     
 }
@@ -395,8 +397,8 @@ class ClientHandler extends Thread {
     private static void hanldePrivKeyRequest(int user_id, PrintWriter out){
         UsersModel user = MongoController.getUserById(user_id);
         String privKey = user.getPrivKey();
-        PrivKeyWrapper pkw = new PrivKeyWrapper(privKey);
-        sendObj2Client(pkw, out);
+        PrivKeyWrapper privkw = new PrivKeyWrapper(privKey, user_id);
+        sendObj2Client(privkw, out);
     }
 }
 
