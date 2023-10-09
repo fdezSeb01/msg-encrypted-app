@@ -163,22 +163,27 @@ public class MainController {
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             case 2:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             case 3:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             case 4:
                 newText.setOnMouseClicked(event ->{
                     see_decifrar_pop_up(event);
                 });
+                break;
             case 5:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             default:
                 break;
         }
@@ -217,25 +222,31 @@ public class MainController {
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             case 2:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             case 3:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             case 4:
                 newText.setOnMouseClicked(event ->{
                     see_decifrar_pop_up(event);
                 });
+                break;
             case 5:
                 newText.setOnMouseClicked(event ->{
                     see_signature(event);
                 });
+                break;
             default:
                 break;
         }
+
 
 
         mainPane.getChildren().add(newText);
@@ -293,22 +304,27 @@ public class MainController {
                 newText.setOnMouseClicked(ev ->{
                     see_signature(ev);
                 });
+                break;
             case 2:
                 newText.setOnMouseClicked(ev ->{
                     see_signature(ev);
                 });
+                break;
             case 3:
                 newText.setOnMouseClicked(ev ->{
                     see_signature(ev);
                 });
+                break;
             case 4:
                 newText.setOnMouseClicked(ev ->{
                     see_decifrar_pop_up(ev);
                 });
+                break;
             case 5:
                 newText.setOnMouseClicked(ev ->{
                     see_signature(ev);
                 });
+                break;
             default:
                 break;
         }
@@ -519,7 +535,7 @@ public class MainController {
 
     @FXML
     private void see_decifrar_pop_up(MouseEvent event){
-        SimEncMsg = ((Label) event.getSource()).getText();
+        SimEncMsg = ((Label) event.getSource()).getText().split("   ")[0];
         //poner texto en el pop up
         DecifrarSimPopUp.setVisible(true);
         msg_label.setText(SimEncMsg);

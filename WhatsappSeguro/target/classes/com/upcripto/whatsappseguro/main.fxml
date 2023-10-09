@@ -96,7 +96,7 @@
                   <Font name="Monospaced Regular" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="simKeyInput" layoutX="73.0" layoutY="78.0" promptText="Llave" styleClass="num-txt-field">
+            <TextField fx:id="simKeyInput" layoutX="73.0" layoutY="78.0" onKeyTyped="#decifrar_texto" promptText="Llave" styleClass="num-txt-field">
                <font>
                   <Font name="Monospaced Regular" size="13.0" />
                </font>

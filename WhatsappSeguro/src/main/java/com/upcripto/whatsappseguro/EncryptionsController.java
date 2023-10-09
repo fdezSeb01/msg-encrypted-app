@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class EncryptionsController {
     
-    private static String abc = "QWERTYUIOPASDFGHJKLÑZXCVBNM0123456789zxcvbnmasdfghjklñqwertyuiop";
+    private static String abc = "QhjklW E!R\"T·Y$U%I61278vbnma9z&O/P(A)S=D?F'wertyuioG¿H¡J`+^*K´çL-Ñ_Z.X,C;V:BN[M]0345xcsdfgñqp";
     private static int myPrivKey=-1;
     
     public static void setMyPrivKey(String key,String user_id){
@@ -54,7 +54,7 @@ public class EncryptionsController {
 
     public static String decryptSimetric(String text, String key_str){
         int key = Integer.parseInt(key_str);
-        key = abc.length()-key;
+        key = abc.length()-(key%abc.length());
         String temp="";
         for(int i=0;i<text.length();i++){
             int index = abc.indexOf(text.charAt(i));
