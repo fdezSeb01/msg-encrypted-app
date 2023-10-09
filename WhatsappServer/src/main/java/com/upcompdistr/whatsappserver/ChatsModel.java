@@ -14,7 +14,6 @@ class Message {
     // Constructors, getters, and setters
     public Message() {}
     
-
     public Message(String text, String time, int message_id, int sender_id, String hash, String encRndKey,
             int msgType) {
         this.text = text;
