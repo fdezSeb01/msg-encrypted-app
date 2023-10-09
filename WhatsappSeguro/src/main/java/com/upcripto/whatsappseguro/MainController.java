@@ -139,58 +139,98 @@ public class MainController {
     @FXML
     private void printMessage(String msg, boolean MyMsg, String time, int i, String hash, String encRndKey, int type){
         if(msg.isEmpty()) return;
-        String decoded_msg  = decodeMsg(msg,type,encRndKey);
-        msg = msg+"   "+time;
-        Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
-        Label newText = new Label(msg);
-        newText.getStyleClass().add("message");
-        newText.setFont(Font.font("Monospaced"));
-        String hash_decoded="";
-        try {
+
+        if(MyMsg){
+            String decoded_msg  = decodeOwnMsg(msg,type,encRndKey);
+            msg = msg+"   "+time;
+            Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
+            Label newText = new Label(msg);
+            newText.getStyleClass().add("message");
+            newText.setFont(Font.font("Monospaced"));
+            newText.setId(EncryptionsController.getHash(decoded_msg));
+            newText.getStyleClass().add("left");
+            newText.setLayoutX(14f);
+            Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
+            newText.setLayoutY((i==0) ? Yheight : Yheight+37);
+
+            switch(type){
+                case 1:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                case 2:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                case 3:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                case 4:
+                    newText.setOnMouseClicked(event ->{
+                        see_decifrar_pop_up(event);
+                    });
+                    break;
+                case 5:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                default:
+                    break;
+            }
+            mainPane.getChildren().add(newText);
+            adjustScrollPaneHeight(newText);
+        }else{
+            String decoded_msg  = decodeMsg(msg,type,encRndKey);
+            msg = msg+"   "+time;
+            Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
+            Label newText = new Label(msg);
+            newText.getStyleClass().add("message");
+            newText.setFont(Font.font("Monospaced"));
+            String hash_decoded="";
             hash_decoded = decodeHash(hash, type, encRndKey,decoded_msg);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            newText.setId(hash_decoded);
+            newText.getStyleClass().add(MyMsg ? "left" : getColor(type,hash_decoded,decoded_msg));
+            newText.setLayoutX(14f);
+            Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
+            newText.setLayoutY((i==0) ? Yheight : Yheight+37);
+
+            switch(type){
+                case 1:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                case 2:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                case 3:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                case 4:
+                    newText.setOnMouseClicked(event ->{
+                        see_decifrar_pop_up(event);
+                    });
+                    break;
+                case 5:
+                    newText.setOnMouseClicked(event ->{
+                        see_signature(event);
+                    });
+                    break;
+                default:
+                    break;
+            }
+            mainPane.getChildren().add(newText);
+            adjustScrollPaneHeight(newText);
         }
-        newText.setId(hash_decoded);
-        newText.getStyleClass().add(MyMsg ? "left" : getColor(type,hash_decoded,decoded_msg));
-        newText.setLayoutX(14f);
-        Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
-        newText.setLayoutY((i==0) ? Yheight : Yheight+37);
-
-
-        switch(type){
-            case 1:
-                newText.setOnMouseClicked(event ->{
-                    see_signature(event);
-                });
-                break;
-            case 2:
-                newText.setOnMouseClicked(event ->{
-                    see_signature(event);
-                });
-                break;
-            case 3:
-                newText.setOnMouseClicked(event ->{
-                    see_signature(event);
-                });
-                break;
-            case 4:
-                newText.setOnMouseClicked(event ->{
-                    see_decifrar_pop_up(event);
-                });
-                break;
-            case 5:
-                newText.setOnMouseClicked(event ->{
-                    see_signature(event);
-                });
-                break;
-            default:
-                break;
-        }
-
-
-        mainPane.getChildren().add(newText);
-        adjustScrollPaneHeight(newText);
     }
 
     @FXML
@@ -204,11 +244,7 @@ public class MainController {
         newText.getStyleClass().add("message");
         newText.setFont(Font.font("Monospaced"));
         String hash_decoded="";
-        try {
-            hash_decoded = decodeHash(hash, type, encRndKey,decoded_msg);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        hash_decoded = decodeHash(hash, type, encRndKey,decoded_msg);
         newText.setId(hash_decoded);
         newText.getStyleClass().add(MyMsg ? "left" : getColor(type,hash_decoded,decoded_msg));
 
@@ -246,8 +282,6 @@ public class MainController {
             default:
                 break;
         }
-
-
 
         mainPane.getChildren().add(newText);
         adjustScrollPaneHeight(newText);
@@ -298,36 +332,11 @@ public class MainController {
         newText.setLayoutX(14f);
         Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
         newText.setLayoutY(Yheight+7);
-        newText.setId(EncryptionsController.getHash(msgForServer));
-        switch(msgType){
-            case 1:
-                newText.setOnMouseClicked(ev ->{
-                    see_signature(ev);
-                });
-                break;
-            case 2:
-                newText.setOnMouseClicked(ev ->{
-                    see_signature(ev);
-                });
-                break;
-            case 3:
-                newText.setOnMouseClicked(ev ->{
-                    see_signature(ev);
-                });
-                break;
-            case 4:
-                newText.setOnMouseClicked(ev ->{
-                    see_decifrar_pop_up(ev);
-                });
-                break;
-            case 5:
-                newText.setOnMouseClicked(ev ->{
-                    see_signature(ev);
-                });
-                break;
-            default:
-                break;
-        }
+        newText.setId(EncryptionsController.getHash(txt2send.getText()));
+        newText.setOnMouseClicked(ev ->{
+            see_signature(ev);
+        });
+  
 
         mainPane.getChildren().add(newText);
         adjustScrollPaneHeight(newText);
@@ -485,7 +494,7 @@ public class MainController {
 
     }
 
-    private static String decodeHash(String hash, int msgType, String encRndKey, String msg) throws NoSuchAlgorithmException{
+    private static String decodeHash(String hash, int msgType, String encRndKey, String msg){
         switch(msgType){
             case 1:
                 return EncryptionsController.getHash(msg);
@@ -539,5 +548,23 @@ public class MainController {
         //poner texto en el pop up
         DecifrarSimPopUp.setVisible(true);
         msg_label.setText(SimEncMsg);
+    }
+
+    private String decodeOwnMsg(String msg, int msgType, String encRndKey){
+        switch(msgType){
+            case 1:
+                return msg;
+            case 2:
+                return msg;
+            case 3:
+                return msg;
+            case 4:
+                return msg;
+            case 5:
+                return msg;
+            default:
+                return "Error decifrando mensaje :(";
+        }
+
     }
 }
