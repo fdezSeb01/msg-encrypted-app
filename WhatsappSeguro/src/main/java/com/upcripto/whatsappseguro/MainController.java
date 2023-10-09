@@ -193,7 +193,7 @@ public class MainController {
         //tratar hash, encrndkey y msgtype
         if(msg.isEmpty()) return;
         String decoded_msg  = decodeMsg(msg,type,encRndKey);
-        msg = msg+"   "+time;
+        msg = decoded_msg+"   "+time;
         Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
         Label newText = new Label(msg);
         newText.getStyleClass().add("message");
@@ -263,9 +263,9 @@ public class MainController {
                 break;
             case 3: //sobre digital
                 String rndKey = EncryptionsController.generateRndKey();
-                msgForServer=EncryptionsController.SimpleSust(msgForServer,rndKey);
                 hash = EncryptionsController.getHash(msgForServer);
                 hash = EncryptionsController.SimpleSust(hash,rndKey);
+                msgForServer=EncryptionsController.SimpleSust(msgForServer,rndKey);
                 encRndKey = EncryptionsController.SimpleSust(rndKey, pubDestKey);
                 break;
             case 4: //simetrico
@@ -458,7 +458,7 @@ public class MainController {
                 return msg;
             case 3:
                 String rndKey = EncryptionsController.SimpleSust(encRndKey);
-                return EncryptionsController.SimpleSust(msg,rndKey);
+                return EncryptionsController.decryptSimetric(msg,rndKey);
             case 4:
                 return msg;
             case 5:
@@ -477,7 +477,7 @@ public class MainController {
                 return EncryptionsController.SimpleSust(hash);
             case 3:
                 String rndKey = EncryptionsController.SimpleSust(encRndKey);
-                return EncryptionsController.SimpleSust(hash,rndKey);
+                return EncryptionsController.decryptSimetric(hash,rndKey);
             case 4:
                 return EncryptionsController.getHash(msg);
             case 5:

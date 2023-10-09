@@ -54,10 +54,11 @@ public class EncryptionsController {
 
     public static String decryptSimetric(String text, String key_str){
         int key = Integer.parseInt(key_str);
+        key = abc.length()-key;
         String temp="";
         for(int i=0;i<text.length();i++){
             int index = abc.indexOf(text.charAt(i));
-            index = (index - key)%abc.length();
+            index = (index + key)%abc.length();
             temp += abc.charAt(index);
         }
         return temp;
