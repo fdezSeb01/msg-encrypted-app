@@ -5,6 +5,7 @@ com/upcripto/whatsappseguro/ContactosController.class
 com/upcripto/whatsappseguro/Main.class
 com/upcripto/whatsappseguro/App.class
 module-info.class
+com/upcripto/whatsappseguro/requestPrivKey.class
 com/upcripto/whatsappseguro/ChatsRequest.class
 com/upcripto/whatsappseguro/EncryptionsController.class
 com/upcripto/whatsappseguro/requestPubKey.class

@@ -342,7 +342,7 @@ public class ConnectionsController {
         String id = obj.get("chat_id").getAsString();
         String hash = obj.get("hash").getAsString();
         String encRndKey = obj.get("encRndKey").getAsString();
-        int type = obj.get("type").getAsInt();
+        int type = obj.get("msgType").getAsInt();
 
         MainController.recieveMsg(msg, time,id,hash,encRndKey,type);
     }

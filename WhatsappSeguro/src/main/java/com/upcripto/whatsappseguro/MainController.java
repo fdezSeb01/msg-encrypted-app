@@ -139,8 +139,7 @@ public class MainController {
     @FXML
     private void printMessage(String msg, boolean MyMsg, String time, int i, String hash, String encRndKey, int type){
         if(msg.isEmpty()) return;
-        msg = decodeMsg(msg,type,encRndKey);
-        String decoded_msg = msg;
+        String decoded_msg  = decodeMsg(msg,type,encRndKey);
         msg = msg+"   "+time;
         Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
         Label newText = new Label(msg);
@@ -193,8 +192,7 @@ public class MainController {
     private void printSingleMessageFromServer(String msg, boolean MyMsg, String time, int i,String hash, String encRndKey, int type){
         //tratar hash, encrndkey y msgtype
         if(msg.isEmpty()) return;
-        msg = decodeMsg(msg,type,encRndKey);
-        String decoded_msg = msg;
+        String decoded_msg  = decodeMsg(msg,type,encRndKey);
         msg = msg+"   "+time;
         Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
         Label newText = new Label(msg);
@@ -212,6 +210,34 @@ public class MainController {
         newText.setLayoutX(14f);
         Double Yheight = lastText.layoutYProperty().getValue()+lastText.getHeight();
         newText.setLayoutY((i==0) ? Yheight : Yheight+7);
+
+
+        switch(msgType){
+            case 1:
+                newText.setOnMouseClicked(event ->{
+                    see_signature(event);
+                });
+            case 2:
+                newText.setOnMouseClicked(event ->{
+                    see_signature(event);
+                });
+            case 3:
+                newText.setOnMouseClicked(event ->{
+                    see_signature(event);
+                });
+            case 4:
+                newText.setOnMouseClicked(event ->{
+                    see_decifrar_pop_up(event);
+                });
+            case 5:
+                newText.setOnMouseClicked(event ->{
+                    see_signature(event);
+                });
+            default:
+                break;
+        }
+
+
         mainPane.getChildren().add(newText);
         adjustScrollPaneHeight(newText);
     }
