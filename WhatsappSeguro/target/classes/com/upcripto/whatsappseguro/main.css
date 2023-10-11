@@ -1,0 +1,96 @@
+.message{
+    -fx-background-radius: 5;
+    -fx-border-color: black;
+    -fx-border-radius: 5; 
+    -fx-label-padding: 5;
+}
+
+.left{
+    -fx-background-color: rgb(212, 212, 212);
+}
+
+.plain{
+    
+    -fx-background-color: rgb(181, 247, 179);
+}
+
+.signed{
+    -fx-background-color: rgb(132, 179, 230);
+}
+
+.bad{
+    -fx-background-color: rgb(227, 110, 110);
+
+}
+
+.digital-envelope{
+    -fx-background-color: rgb(227, 220, 131);
+
+}
+
+.symmetric{
+    -fx-background-color: rgb(159, 132, 116);
+
+}
+
+.asymetric{
+    -fx-background-color: rgb(214, 167, 220);
+}
+
+.main-screen{
+
+}
+
+.header-pane{
+    -fx-border-color: black;
+    -fx-background-color: white;
+}
+
+.header-label{
+    -fx-background-color: rgba(255, 255, 255, 0);
+}
+
+.scroll-pane{
+
+}
+
+.send-button{
+
+}
+
+.txt-field{
+
+}
+
+.inner-scroll-pane{
+    
+}
+
+
+.new-num-pane{
+    -fx-border-color: black;
+    -fx-background-color: rgb(233, 233, 233);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+}
+
+.num-txt-field{
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.add-btn{
+    -fx-border-color: black;
+    -fx-background-color: rgb(143, 143, 143);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.close-btn{
+    -fx-border-color: black;
+    -fx-background-color: rgb(143, 143, 143);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}

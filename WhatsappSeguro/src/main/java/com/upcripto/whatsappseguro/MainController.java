@@ -142,7 +142,7 @@ public class MainController {
 
         if(MyMsg){
             String decoded_msg  = decodeOwnMsg(msg,type,encRndKey);
-            msg = msg+"   "+time;
+            msg = decoded_msg+"   "+time;
             Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
             Label newText = new Label(msg);
             newText.getStyleClass().add("message");
@@ -186,7 +186,7 @@ public class MainController {
             adjustScrollPaneHeight(newText);
         }else{
             String decoded_msg  = decodeMsg(msg,type,encRndKey);
-            msg = msg+"   "+time;
+            msg = decoded_msg+"   "+time;
             Label lastText = (Label)mainPane.getChildren().get(mainPane.getChildren().size() - 1);
             Label newText = new Label(msg);
             newText.getStyleClass().add("message");

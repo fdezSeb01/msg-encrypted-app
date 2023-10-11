@@ -1,0 +1,51 @@
+.main-screen{
+
+}
+
+.header-pane{
+    -fx-border-color: black;
+    -fx-background-color: white;
+
+}
+
+.header-label{
+    -fx-background-color: rgba(255, 255, 255, 0);
+}
+
+.name-label{
+    -fx-background-color: white;
+}
+
+.contact-pane{
+    -fx-border-color: black;
+    -fx-background-color: white;
+}
+
+.new-num-pane{
+    -fx-border-color: black;
+    -fx-background-color: rgb(233, 233, 233);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+}
+
+.num-txt-field{
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.add-btn{
+    -fx-border-color: black;
+    -fx-background-color: rgb(143, 143, 143);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.close-btn{
+    -fx-border-color: black;
+    -fx-background-color: rgb(143, 143, 143);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
