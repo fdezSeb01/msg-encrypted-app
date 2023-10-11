@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class EncryptionsController {
 
-    private static String abc = "QhjklW E!R\"T·Y$U%I61278vbnma9z&O/P(A)S=D?F'wertyuioG¿H¡J`+^*K´çL-Ñ_Z.X,C;V:BN[M]0345xcsdfgñqp";
+    private static String abc = "QWERTYU-IOP123&45_67%890A?SD FGHJKLÑZX¿CVB!N¡M.qwerty$u/iop,asdfg;jklñzxcv:bnm";
 
     public static String generateRndKey(){
         Random random = new Random();
