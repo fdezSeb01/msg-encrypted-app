@@ -304,7 +304,7 @@ public class MainController {
                 break;
             case 2: //msj firmado
                 hash = EncryptionsController.getHash(msgForServer);
-                hash = EncryptionsController.SimpleSust(hash,pubDestKey);
+                hash = EncryptionsController.SimpleSust(hash,EncryptionsController.getMyPrivKey());
                 break;
             case 3: //sobre digital
                 String rndKey = EncryptionsController.generateRndKey();
@@ -499,7 +499,7 @@ public class MainController {
             case 1:
                 return EncryptionsController.getHash(msg);
             case 2:
-                return EncryptionsController.SimpleSust(hash);
+                return EncryptionsController.SimpleSust(hash,pubDestKey);
             case 3:
                 String rndKey = EncryptionsController.SimpleSust(encRndKey);
                 return EncryptionsController.decryptSimetric(hash,rndKey);

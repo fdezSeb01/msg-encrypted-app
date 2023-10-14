@@ -11,6 +11,10 @@ public class EncryptionsController {
         myPrivKey = Integer.parseInt(decryptSimetric(key,user_id));
     }
 
+    public static String getMyPrivKey(){
+        return String.valueOf(myPrivKey);
+    }
+
     public static String generateRndKey(){
         Random random = new Random();
         int randomNumber = random.nextInt(abc.length());
