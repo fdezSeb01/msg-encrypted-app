@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class EncryptionsController {
     
-    private static String abc = "QWERTYU-IOP123&45_67%890A?SD FGHJKLÑZX¿CVB!N¡M.qwerty$u/iop,asdfg;jklñzxcv:bnm";
+    private static String abc = "QWERTYU-IOP123&45_67%890A?SD FGHJKLÑZX¿CVB!N¡M.qwerty$u/iop,asdfg;hjklñzxcv:bnm";
     private static int myPrivKey=-1;
     
     public static void setMyPrivKey(String key,String user_id){
