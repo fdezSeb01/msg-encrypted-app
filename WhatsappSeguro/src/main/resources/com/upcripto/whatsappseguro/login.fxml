@@ -43,12 +43,12 @@
          </font>
       </Button>
       <Label fx:id="loginError" layoutX="95.0" layoutY="378.0" text="Nombre y número no coinciden" textFill="RED" visible="false" />
-      <Label layoutX="134.0" layoutY="337.0" prefHeight="25.0" prefWidth="115.0" text="Contraseña">
+      <Label layoutX="92.0" layoutY="336.0" prefHeight="25.0" prefWidth="200.0" text="Frase de seguridad">
          <font>
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="safety_phrase_input" layoutX="47.0" layoutY="369.0" prefHeight="37.0" prefWidth="282.0" promptText="Frase seguridad" styleClass="text-field">
+      <TextField fx:id="safety_phrase_input" layoutX="47.0" layoutY="369.0" prefHeight="37.0" prefWidth="282.0" promptText="Frase" styleClass="text-field">
          <font>
             <Font name="Monospaced Regular" size="16.0" />
          </font>
