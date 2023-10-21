@@ -284,8 +284,9 @@ class ClientHandler extends Thread {
         //return options (-2 mogno error,-1 name doesnt mathc ,user_id,new_user_id)
         String name = user.get("name").getAsString();
         String num = user.get("phone_num").getAsString();
+        String safety_phrase = user.get("safety_phrase").getAsString();
 
-        int response = MongoController.check_userId_exists(name,num);
+        int response = MongoController.check_userId_exists(name,num,safety_phrase);
         loginValidation lv = new loginValidation(response);
         sendObj2Client(lv, out);
     }
@@ -388,15 +389,15 @@ class ClientHandler extends Thread {
     }
 
     private static void hanldePubKeyRequest(int user_id, PrintWriter out){
-        UsersModel user = MongoController.getUserById(user_id);
-        String pubKey = user.getPubKey();
+        DigitalCertificateModel certificate = MongoController.getPubKeyFromDigitalCertificate(user_id);
+        String pubKey = certificate.getPubKey();
         PubKeyWrapper pkw = new PubKeyWrapper(pubKey);
         sendObj2Client(pkw, out);
     }
 
     private static void hanldePrivKeyRequest(int user_id, PrintWriter out){
-        UsersModel user = MongoController.getUserById(user_id);
-        String privKey = user.getPrivKey();
+        PrivKeyModel privKeyModel = MongoController.getPrivKeyFrom(user_id);
+        String privKey = privKeyModel.getPrivate_key();
         PrivKeyWrapper privkw = new PrivKeyWrapper(privKey, user_id);
         sendObj2Client(privkw, out);
     }

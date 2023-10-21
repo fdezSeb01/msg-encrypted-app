@@ -37,11 +37,21 @@
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </TextField>
-      <Button fx:id="LoginBtn" layoutX="98.0" layoutY="359.0" mnemonicParsing="false" onAction="#LoginRegister" styleClass="login-btn" text="Login/Registrar">
+      <Button fx:id="LoginBtn" layoutX="94.0" layoutY="420.0" mnemonicParsing="false" onAction="#LoginRegister" styleClass="login-btn" text="Login/Registrar">
          <font>
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </Button>
-      <Label fx:id="loginError" layoutX="95.0" layoutY="416.0" text="Nombre y número no coinciden" textFill="RED" visible="false" />
+      <Label fx:id="loginError" layoutX="95.0" layoutY="378.0" text="Nombre y número no coinciden" textFill="RED" visible="false" />
+      <Label layoutX="134.0" layoutY="337.0" prefHeight="25.0" prefWidth="115.0" text="Contraseña">
+         <font>
+            <Font name="Monospaced Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="safety_phrase_input" layoutX="47.0" layoutY="369.0" prefHeight="37.0" prefWidth="282.0" promptText="Frase seguridad" styleClass="text-field">
+         <font>
+            <Font name="Monospaced Regular" size="16.0" />
+         </font>
+      </TextField>
    </children>
 </Pane>
