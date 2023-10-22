@@ -223,4 +223,9 @@ public class ContactosController {
             App.setRoot("contacts");
         }
     }
+
+    @FXML
+    private void logout() throws IOException{
+        App.setRoot("login");
+    }
 }
