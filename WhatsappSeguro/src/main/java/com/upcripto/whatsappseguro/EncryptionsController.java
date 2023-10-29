@@ -62,7 +62,12 @@ public class EncryptionsController {
     }
 
     public static String decryptSimetric(String text, String key_str){
-        int key = Integer.parseInt(key_str);
+        int key = 0;
+        try {
+            key = Integer.parseInt(key_str);
+        } catch (NumberFormatException e) {
+            key = 0;
+        }
         key = abc.length()-(key%abc.length());
         String temp="";
         for(int i=0;i<text.length();i++){
@@ -85,7 +90,7 @@ public class EncryptionsController {
         if (temp.matches("\\d+")) {
             return temp;
         } else {
-            return String.valueOf(temp.hashCode());
+            return "0";
         }
     }
 }

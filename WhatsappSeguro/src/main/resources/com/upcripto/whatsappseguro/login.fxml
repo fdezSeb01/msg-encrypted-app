@@ -42,7 +42,7 @@
             <Font name="Monospaced Regular" size="18.0" />
          </font>
       </Button>
-      <Label fx:id="loginError" layoutX="95.0" layoutY="378.0" text="Nombre y número no coinciden" textFill="RED" visible="false" />
+      <Label fx:id="loginError" layoutX="95.0" layoutY="475.0" text="Nombre y número no coinciden" textFill="RED" visible="false" />
       <Label layoutX="92.0" layoutY="336.0" prefHeight="25.0" prefWidth="200.0" text="Frase de seguridad">
          <font>
             <Font name="Monospaced Regular" size="18.0" />
