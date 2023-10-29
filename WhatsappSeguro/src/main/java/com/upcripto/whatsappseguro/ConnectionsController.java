@@ -19,9 +19,11 @@ class User{
     String action;
     String name;
     String phone_num;
-    public User(String name, String num) {
+    String safety_phrase;
+    public User(String name, String num, String safety_phrase) {
         this.name = name;
         this.phone_num = num;
+        this.safety_phrase = safety_phrase;
         action = "validateLogin";
     }
 }
@@ -181,7 +183,7 @@ public class ConnectionsController {
                                 handlePubKeyRecieved(jsonObject.get("pubKey").getAsString());
                                 break;
                             case "privKey_attached":
-                                handlePrivKeyRecieved(jsonObject.get("privKey").getAsString(),jsonObject.get("user_id").getAsInt());
+                                handlePrivKeyRecieved(jsonObject.get("privKey").getAsString());
                                 break;
                             default:
                                 handleUnsupportedAction(action);
@@ -210,8 +212,8 @@ public class ConnectionsController {
         }
     }
 
-    public static void ValidateLogin(String name, String num){
-        User user = new User(name, num);
+    public static void ValidateLogin(String name, String num, String safety_phrase){
+        User user = new User(name, num, safety_phrase);
         talk2server(user);
     }
 
@@ -361,7 +363,7 @@ public class ConnectionsController {
         talk2server(rpk);
     }
 
-    public static void handlePrivKeyRecieved(String privKey, int user_id){
-        EncryptionsController.setMyPrivKey(privKey, String.valueOf(user_id));
+    public static void handlePrivKeyRecieved(String privKey){
+        EncryptionsController.setMyPrivKey(privKey);
     }
 }

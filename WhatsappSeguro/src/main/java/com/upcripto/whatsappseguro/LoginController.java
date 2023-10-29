@@ -18,9 +18,14 @@ public class LoginController {
     TextField numInput;
 
     @FXML
+    TextField safety_phrase_input;
+
+    @FXML
     private Button LoginBtn;
 
     private static LoginController instance;
+
+    private static String safety_phrase;
 
     public void initialize() {
         // Initialize your button and set event listeners in the initialize method
@@ -41,7 +46,8 @@ public class LoginController {
 
     @FXML
     private void LoginRegister(ActionEvent event) throws IOException{
-        ConnectionsController.ValidateLogin(nameInput.getText(), numInput.getText());
+        safety_phrase = safety_phrase_input.getText();
+        ConnectionsController.ValidateLogin(nameInput.getText(), numInput.getText(),safety_phrase_input.getText());
     }
 
     public static void ValidationGotten(int response) throws IOException{
@@ -52,6 +58,7 @@ public class LoginController {
         }
         ContactosController.setUserId(user_id);
         ConnectionsController.setClientIdForServer(user_id);
+        EncryptionsController.setMySafetyPhrase(safety_phrase);
         App.setRoot("contacts");
 
     }

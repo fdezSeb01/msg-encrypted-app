@@ -1,7 +1,6 @@
 package com.upcripto.whatsappseguro;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalTime;
 
 import javafx.event.ActionEvent;

@@ -37,7 +37,7 @@
    <children>
       <Pane fx:id="headerPane" prefHeight="65.0" prefWidth="376.0" styleClass="header-pane">
          <children>
-            <Label alignment="TOP_CENTER" layoutX="98.0" layoutY="2.0" styleClass="header-label" text="WhatsUP" textAlignment="CENTER">
+            <Label alignment="TOP_CENTER" layoutX="98.0" layoutY="1.0" styleClass="header-label" text="WhatsUP" textAlignment="CENTER">
                <font>
                   <Font name="Noto Sans CJK JP" size="43.0" />
                </font>
@@ -45,6 +45,11 @@
             <ImageView fx:id="addChat" fitHeight="35.0" fitWidth="35.0" layoutX="321.0" layoutY="15.0" onMouseClicked="#add_chat" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/plus.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="16.0" layoutY="19.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/back.png" />
                </image>
             </ImageView>
          </children>

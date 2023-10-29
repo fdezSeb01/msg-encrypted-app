@@ -10,13 +10,16 @@ public class EncryptionsController {
 
     public static String generateRndKey(){
         Random random = new Random();
-        int randomNumber = random.nextInt(abc.length());
+        int randomNumber = Math.abs(random.nextInt());
         return String.valueOf(randomNumber);
     }
 
-    public static String generatePrivKey(String pubKey, int user_id){
-        int privKey = abc.length() - Integer.parseInt(pubKey);
-        return SimpleSust(String.valueOf(privKey), String.valueOf(user_id));
+    public static String generatePrivKey(String pubKey, String safety_phrase){
+        int pub = Integer.parseInt(pubKey);
+        int len = abc.length();
+        int privKey = (pub/len)*len+(len-(pub%len));
+        int phrase_hash = Math.abs(safety_phrase.hashCode());
+        return SimpleSust(String.valueOf(privKey), String.valueOf(phrase_hash));
         //cada user tiene una llave provada encriptada con su numero de usuario
     }
 
