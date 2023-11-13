@@ -81,13 +81,14 @@ public class MongoController {
                 Document result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
                 System.out.println("Validating public key is not in AR1");
                 if (result != null) {
-                    //meaning the key was found
+                    //meaning the key was found in AR1
                     pubKey_duplicated = true;
                 } else {
                     arCollection = database.getCollection("AR2");
                     result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
                     System.out.println("Validating public key is not in AR2");
                     if(result != null){
+                        //meaning the key was found in AR2
                         pubKey_duplicated=true;
                     }
                 }
