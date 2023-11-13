@@ -74,7 +74,7 @@ public class MongoController {
             String uid = UUID.randomUUID().toString();
             Boolean pubKey_duplicated = false;
             String pubKey;
-            do{
+            do{ //Block to verify the public key does not exist and if it does, generate a new one
                 pubKey = EncryptionsController.generateRndKey();
                 MongoDatabase database = mongoClient.getDatabase("WhatsUP");
                 MongoCollection<Document> arCollection = database.getCollection("AR1");
