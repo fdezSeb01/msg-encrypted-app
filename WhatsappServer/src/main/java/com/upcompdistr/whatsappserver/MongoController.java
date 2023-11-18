@@ -75,6 +75,7 @@ public class MongoController {
             Boolean pubKey_duplicated = false;
             String pubKey;
             do{ //Block to verify the public key does not exist and if it does, generate a new one
+                pubKey_duplicated = false;
                 pubKey = EncryptionsController.generateRndKey();
                 MongoCollection<Document> arCollection = database.getCollection("AR1");
                 Document result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
