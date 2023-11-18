@@ -82,6 +82,7 @@ public class MongoController {
                 System.out.println("Validating public key is not in AR1");
                 if (result != null) {
                     //meaning the key was found in AR1
+                    System.out.println("public key found in AR1, creating another one");
                     pubKey_duplicated = true;
                 } else {
                     arCollection = database.getCollection("AR2");
@@ -89,6 +90,7 @@ public class MongoController {
                     System.out.println("Validating public key is not in AR2");
                     if(result != null){
                         //meaning the key was found in AR2
+                        System.out.println("public key found in AR2, creating another one");
                         pubKey_duplicated=true;
                     }
                 }
