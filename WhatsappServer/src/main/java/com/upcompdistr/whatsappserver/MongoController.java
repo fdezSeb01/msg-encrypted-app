@@ -76,7 +76,6 @@ public class MongoController {
             String pubKey;
             do{ //Block to verify the public key does not exist and if it does, generate a new one
                 pubKey = EncryptionsController.generateRndKey();
-                MongoDatabase database = mongoClient.getDatabase("WhatsUP");
                 MongoCollection<Document> arCollection = database.getCollection("AR1");
                 Document result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
                 System.out.println("Validating public key is not in AR1");
@@ -92,7 +91,7 @@ public class MongoController {
                         pubKey_duplicated=true;
                     }
                 }
-            }while(pubKey_duplicated)
+            }while(pubKey_duplicated);
             String valid_from = LocalDate.now().toString();
             String valid_to = LocalDate.now().plusYears(2).toString();
             DigitalCertificateModel digital_certificate = new DigitalCertificateModel(uid, user_id, name, pubKey, valid_from, valid_to);
