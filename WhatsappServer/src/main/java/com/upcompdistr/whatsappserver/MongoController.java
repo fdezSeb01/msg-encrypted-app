@@ -72,7 +72,27 @@ public class MongoController {
             MongoCollection<Document> privKeysCollection = database.getCollection("PrivateKeys");
 
             String uid = UUID.randomUUID().toString();
-            String pubKey = EncryptionsController.generateRndKey();
+            Boolean pubKey_duplicated = false;
+            String pubKey;
+            do{ //Block to verify the public key does not exist and if it does, generate a new one
+                pubKey_duplicated = false;
+                pubKey = EncryptionsController.generateRndKey();
+                MongoCollection<Document> arCollection = database.getCollection("AR1");
+                Document result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
+                System.out.println("Validating public key is not in AR1");
+                if (result != null) {
+                    //meaning the key was found in AR1
+                    pubKey_duplicated = true;
+                } else {
+                    arCollection = database.getCollection("AR2");
+                    result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
+                    System.out.println("Validating public key is not in AR2");
+                    if(result != null){
+                        //meaning the key was found in AR2
+                        pubKey_duplicated=true;
+                    }
+                }
+            }while(pubKey_duplicated);
             String valid_from = LocalDate.now().toString();
             String valid_to = LocalDate.now().plusYears(2).toString();
             DigitalCertificateModel digital_certificate = new DigitalCertificateModel(uid, user_id, name, pubKey, valid_from, valid_to);
