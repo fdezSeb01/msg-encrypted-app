@@ -60,6 +60,23 @@ public class MongoController {
         }
     }
 
+
+    public static void savePublicKey(String publicKey) {
+        try {
+            MongoDatabase database = mongoClient.getDatabase("WhatsUP");
+            MongoCollection<Document> arcCollection = database.getCollection("ARC");
+
+            // Create a document to store the publicKey
+            Document publicKeyDocument = new Document("pubKey", publicKey);
+
+            // Insert the document into the ARC collection
+            arcCollection.insertOne(publicKeyDocument);
+
+            System.out.println("Llave publcia guardada en ARC: " + publicKey);
+        } catch (Exception e) {
+            System.err.println("Error saving public key to ARC collection: " + e.getMessage());
+        }
+    }
     public static void create_keys_for_user(int user_id, String name, String safety_phrase){
         try {
             MongoDatabase database = mongoClient.getDatabase("WhatsUP");
@@ -77,22 +94,13 @@ public class MongoController {
             do{ //Block to verify the public key does not exist and if it does, generate a new one
                 pubKey_duplicated = false;
                 pubKey = EncryptionsController.generateRndKey();
-                MongoCollection<Document> arCollection = database.getCollection("AR1");
-                Document result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
-                System.out.println("Validating public key is not in AR1");
+                MongoCollection<Document> arcCollection = database.getCollection("ARC");
+                Document result = arcCollection.find(Filters.eq("pubKey", pubKey)).first();
+                System.out.println("Validating public key is not in ARC");
                 if (result != null) {
-                    //meaning the key was found in AR1
-                    System.out.println("public key found in AR1, creating another one");
+                    //meaning the key was found in ARC
+                    System.out.println("public key found in ARC, creating another one");
                     pubKey_duplicated = true;
-                } else {
-                    arCollection = database.getCollection("AR2");
-                    result = arCollection.find(Filters.eq("pubKey", pubKey)).first();
-                    System.out.println("Validating public key is not in AR2");
-                    if(result != null){
-                        //meaning the key was found in AR2
-                        System.out.println("public key found in AR2, creating another one");
-                        pubKey_duplicated=true;
-                    }
                 }
             }while(pubKey_duplicated);
             String valid_from = LocalDate.now().toString();
@@ -106,7 +114,7 @@ public class MongoController {
                     .append("valid_to", digital_certificate.getValidTo());
             certificateCollection.insertOne(digitalCertificateDoc);
             System.out.println("Certificado creado: " + digital_certificate.toString());
-
+            savePublicKey(pubKey);
             String privKey = EncryptionsController.generatePrivKey(pubKey, safety_phrase);
             PrivKeyModel privKey_object = new PrivKeyModel(user_id, privKey);
             Document privKeyDoc = new Document("user_id", privKey_object.getUser_id())
