@@ -6,8 +6,7 @@ Encrypted messaging java application with a custom PKI using a non-relational da
 ![image](https://github.com/fdezSeb01/msg-encrypted-app/assets/110956552/fc855eb0-e884-4766-96e0-736fc3474c8e)
 ![image](https://github.com/fdezSeb01/msg-encrypted-app/assets/110956552/0d170cc6-6dae-4979-8216-c74d4ab95707)
 ![image](https://github.com/fdezSeb01/msg-encrypted-app/assets/110956552/25dbd32b-a550-4982-99df-8ef3d21aa56b)
-If someone managed to get into Fulanito's messages without his pass phrase (used to decrypt their provate key and decrypt the recieved messages), left chat is the impostor and right chat the legit one
-Messages in green were sent in plain text (anyone can see them) and pink message is asymetrcially encrypted (only Fulanito with his private key can decrypt it)
+If someone managed to get into Fulanito's messages without his pass phrase (used to decrypt their provate key and decrypt the recieved messages), left chat is the impostor and right chat the legit one. Messages in green were sent in plain text (anyone can see them) and pink message is asymetrcially encrypted (only Fulanito with his private key can decrypt it)
 ![image](https://github.com/fdezSeb01/msg-encrypted-app/assets/110956552/33113435-1c12-4ae4-9525-6aaa66d98e8b)
 
 
